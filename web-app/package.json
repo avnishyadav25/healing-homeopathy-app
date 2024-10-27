@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Web application for Healing Homoeopathy",
   "main": "src/index.js",
-  "type": "module",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
