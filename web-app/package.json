@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/lab": "^5.0.0-alpha.173",
     "@mui/material": "^5.16.7",
+    "@mui/styles": "^6.1.5",
     "@mui/x-data-grid": "^7.15.0",
     "@mui/x-date-pickers": "^5.0.20",
     "@popperjs/core": "^2.11.8",
@@ -53,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
