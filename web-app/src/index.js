@@ -6,8 +6,8 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import theme from './theme'; // Import the custom theme
+import App from './App.js';
+import theme from './theme.js'; // Import the custom theme
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
