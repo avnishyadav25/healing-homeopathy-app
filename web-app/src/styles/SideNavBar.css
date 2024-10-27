@@ -1,0 +1,51 @@
+/* /web-app/src/styles/SideNavBar.css */
+
+.side-nav {
+    width: 250px;
+    background-color: #343a40;
+    padding-top: 60px;
+    color: white;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+  }
+  
+  .side-nav ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .side-nav ul li {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .side-nav ul li a {
+    color: #ddd;
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+    font-weight: 500;
+  }
+  
+  .side-nav ul li a:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+  }
+  
+  .side-nav ul li .collapse ul li a {
+    padding-left: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .side-nav {
+      width: 100%;
+      height: auto;
+      border-right: none;
+      padding-top: 20px;
+    }
+    .side-nav ul {
+      padding: 10px;
+    }
+  }
+  

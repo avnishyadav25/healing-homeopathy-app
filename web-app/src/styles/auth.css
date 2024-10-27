@@ -1,0 +1,194 @@
+/* /web-app/src/styles/auth.css */
+
+/* General styling for the auth page */
+.auth-page {
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-form {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+}
+
+.alert {
+  margin-bottom: 1rem;
+}
+
+.register-hero-section {
+  padding: 4rem 0;
+  background-color: #f9f9f9;
+}
+
+.register-hero-section .container {
+  max-width: 1200px;
+}
+
+.register-hero-section h3,
+.register-hero-section ul {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-hero-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.register-hero-section p {
+  margin-bottom: 1.5rem;
+}
+
+.register-hero-section ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.register-hero-section li {
+  margin-bottom: 0.5rem;
+}
+
+/* Custom styling for the Google button */
+.btn-danger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-danger .mr-2 {
+  margin-right: 0.5rem;
+}
+
+.rounded-pill {
+  border-radius: 50px;
+}
+
+
+/* /web-app/src/styles/auth.css */
+
+/* General styling for the role selection page */
+.role-selection-page {
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.auth-form {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+}
+
+.rounded-pill {
+  border-radius: 50px;
+}
+
+/* /web-app/src/styles/auth.css */
+
+/* General styling for the login page */
+.login-hero-section {
+  padding: 4rem 0;
+  background-color: #f9f9f9;
+}
+
+.login-hero-section .container {
+  max-width: 1200px;
+}
+
+.login-hero-section h3,
+.login-hero-section ul {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-hero-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.login-hero-section p {
+  margin-bottom: 1.5rem;
+}
+
+.login-hero-section ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.login-hero-section li {
+  margin-bottom: 0.5rem;
+}
+
+.auth-form {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+}
+
+.rounded-pill {
+  border-radius: 50px;
+}
+
