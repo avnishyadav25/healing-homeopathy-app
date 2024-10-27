@@ -26,7 +26,6 @@
     "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",
     "emailjs-com": "^3.2.0",
-    "fsevents": "^2.0.6",
     "jodit-react": "^4.1.2",
     "jquery": "^3.7.1",
     "patch-package": "^8.0.0",
