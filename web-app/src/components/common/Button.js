@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button as MUIButton, CircularProgress, Fade } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
+
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -10,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   icon: {
-    marginRight: theme.spacing(1),
+    marginRight: useTheme().spacing(8),//theme.spacing(1),
   },
 }));
 
