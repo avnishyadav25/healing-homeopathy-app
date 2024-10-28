@@ -41,7 +41,7 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
       </Box>
       <Divider />
       <List component="nav">
-        <ListItem button component={Link} to="/admin-dashboard">
+        <ListItem button component={Link} to="/admin">
           <ListItemIcon>
             <Home />
           </ListItemIcon>
@@ -80,10 +80,10 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
         </ListItem>
         <Collapse in={open.blog && !collapsed} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button component={Link} to="/admin-dashboard/blog/all-blogs">
+            <ListItem button component={Link} to="/admin/blog/all-blogs">
               <ListItemText inset primary="All Blogs" />
             </ListItem>
-            <ListItem button component={Link} to="/admin-dashboard/blog/create-blog">
+            <ListItem button component={Link} to="/admin/blog/create-blog">
               <ListItemText inset primary="Create Blog" />
             </ListItem>
           </List>
@@ -159,22 +159,22 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
         </ListItem>
         <Collapse in={open.adminTools && !collapsed} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button component={Link} to="/admin-dashboard/product/add-product">
+            <ListItem button component={Link} to="/admin/product/add-product">
               <ListItemText inset primary="Add Product" />
             </ListItem>
-            <ListItem button component={Link} to="/admin-dashboard/user/add-user">
+            <ListItem button component={Link} to="/admin/user/add-user">
               <ListItemText inset primary="Add User" />
             </ListItem>
-            <ListItem button component={Link} to="/admin-dashboard/appointment/add-appointment">
+            <ListItem button component={Link} to="/admin/appointment/add-appointment">
               <ListItemText inset primary="Add Appointment User" />
             </ListItem>
-            <ListItem button component={Link} to="/admin-dashboard/newsletter/add-newsletter-user">
+            <ListItem button component={Link} to="/admin/newsletter/add-newsletter-user">
               <ListItemText inset primary="Add Newsletter User" />
             </ListItem>
-            <ListItem button component={Link} to="/admin-dashboard/appointment/add-appointment-template">
+            <ListItem button component={Link} to="/admin/appointment/add-appointment-template">
               <ListItemText inset primary="Add Appointment Template" />
             </ListItem>
-            <ListItem button component={Link} to="/admin-dashboard/newsletter/add-newsletter-template">
+            <ListItem button component={Link} to="/admin/newsletter/add-newsletter-template">
               <ListItemText inset primary="Add Newsletter Template" />
             </ListItem>
           </List>

@@ -40,7 +40,7 @@ const CustomSidebar = (props) => {
         to="/dashboard"
         primaryText="Dashboard"
         leftIcon={<DashboardIcon />}
-        onClick={() => navigate('/admin-dashboard')}
+        onClick={() => navigate('/admin')}
       />
       <MenuItemLink
         to="#"
@@ -51,24 +51,24 @@ const CustomSidebar = (props) => {
       <Collapse in={open.blog} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <MenuItemLink
-            to="/admin-dashboard/blog/all-blogs"
+            to="/admin/blog/all-blogs"
             primaryText="All Blogs"
-            onClick={() => navigate('/admin-dashboard/blog/all-blogs')}
+            onClick={() => navigate('/admin/blog/all-blogs')}
           />
           <MenuItemLink
-            to="/admin-dashboard/blog/create-blog"
+            to="/admin/blog/create-blog"
             primaryText="Create Blog"
-            onClick={() => navigate('/admin-dashboard/blog/create-blog')}
+            onClick={() => navigate('/admin/blog/create-blog')}
           />
           <MenuItemLink
-            to="/admin-dashboard/blog/comments"
+            to="/admin/blog/comments"
             primaryText="Comments"
-            onClick={() => navigate('/admin-dashboard/blog/comments')}
+            onClick={() => navigate('/admin/blog/comments')}
           />
           <MenuItemLink
-            to="/admin-dashboard/blog/media"
+            to="/admin/blog/media"
             primaryText="Media"
-            onClick={() => navigate('/admin-dashboard/blog/media')}
+            onClick={() => navigate('/admin/blog/media')}
           />
         </List>
       </Collapse>
@@ -81,14 +81,14 @@ const CustomSidebar = (props) => {
       <Collapse in={open.forum} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <MenuItemLink
-            to="/admin-dashboard/forum/all-forums"
+            to="/admin/forum/all-forums"
             primaryText="All Forums"
-            onClick={() => navigate('/admin-dashboard/forum/all-forums')}
+            onClick={() => navigate('/admin/forum/all-forums')}
           />
           <MenuItemLink
-            to="/admin-dashboard/forum/create-forum"
+            to="/admin/forum/create-forum"
             primaryText="Create Forum"
-            onClick={() => navigate('/admin-dashboard/forum/create-forum')}
+            onClick={() => navigate('/admin/forum/create-forum')}
           />
         </List>
       </Collapse>
@@ -101,14 +101,14 @@ const CustomSidebar = (props) => {
       <Collapse in={open.order} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <MenuItemLink
-            to="/admin-dashboard/orders/current-orders"
+            to="/admin/orders/current-orders"
             primaryText="Current Orders"
-            onClick={() => navigate('/admin-dashboard/orders/current-orders')}
+            onClick={() => navigate('/admin/orders/current-orders')}
           />
           <MenuItemLink
-            to="/admin-dashboard/orders/order-history"
+            to="/admin/orders/order-history"
             primaryText="Order History"
-            onClick={() => navigate('/admin-dashboard/orders/order-history')}
+            onClick={() => navigate('/admin/orders/order-history')}
           />
         </List>
       </Collapse>
@@ -121,19 +121,19 @@ const CustomSidebar = (props) => {
       <Collapse in={open.account} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <MenuItemLink
-            to="/admin-dashboard/account/my-profile"
+            to="/admin/account/my-profile"
             primaryText="My Profile"
-            onClick={() => navigate('/admin-dashboard/account/my-profile')}
+            onClick={() => navigate('/admin/account/my-profile')}
           />
           <MenuItemLink
-            to="/admin-dashboard/account/my-settings"
+            to="/admin/account/my-settings"
             primaryText="My Settings"
-            onClick={() => navigate('/admin-dashboard/account/my-settings')}
+            onClick={() => navigate('/admin/account/my-settings')}
           />
           <MenuItemLink
-            to="/admin-dashboard/account/logout"
+            to="/admin/account/logout"
             primaryText="Logout"
-            onClick={() => navigate('/admin-dashboard/account/logout')}
+            onClick={() => navigate('/admin/account/logout')}
           />
         </List>
       </Collapse>
