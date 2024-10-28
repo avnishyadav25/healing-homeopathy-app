@@ -1,16 +1,24 @@
 // /web-app/src/components/ProtectedRoute.js
 
 import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = ({ element: Component, ...rest }) => {
-  const isAuthenticated = localStorage.getItem('token'); // Check if the token is present
+const ProtectedRoute = ({ requiredRole }) => {
+  const token = localStorage.getItem('token'); // Check if the token is present
+  const userRole = localStorage.getItem('role'); // Retrieve the role from localStorage
+  console.log('#### token ', token);
+  console.log('#### userRole ', userRole);
+  if (!token) {
+    // Redirect to login if not authenticated
+    return <Navigate to="/login" replace />;
+  }
 
-  return isAuthenticated ? (
-    <Route {...rest} element={<Component />} />
-  ) : (
-    <Navigate to="/login" />
-  );
+  if (requiredRole && userRole !== requiredRole) {
+    // Redirect unauthorized users to the homepage
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
