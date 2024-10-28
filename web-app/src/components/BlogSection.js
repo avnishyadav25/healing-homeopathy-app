@@ -1,8 +1,7 @@
+// web-app/src/components/BlogSection.js
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import blogService from './../services/blogService';
 import { Container, Grid, Card, CardContent, CardMedia, Typography, Button, Box, Slide, Zoom, Fade } from '@mui/material';
-
-const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
 
 const BlogSection = () => {
   const [blogs, setBlogs] = useState([]);
@@ -10,8 +9,8 @@ const BlogSection = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/blogs?limit=4`); // Fetch the latest 4 blogs
-        setBlogs(response.data.blogs); // Adjusted to fit the response structure
+        const latestBlogs = await blogService.fetchLatestBlogs(4);
+        setBlogs(latestBlogs);
       } catch (error) {
         console.error('Error fetching blogs:', error);
       }
@@ -42,7 +41,7 @@ const BlogSection = () => {
                     <CardMedia
                       component="img"
                       sx={{ width: '40%' }}
-                      image={new URL(blog.featuredImage, apiUrl).href} // Ensure the featured image URL is correctly constructed
+                      image={new URL(blog.featuredImage, process.env.REACT_APP_API_URL).href}
                       alt={blog.title}
                     />
                   </Zoom>
@@ -54,12 +53,11 @@ const BlogSection = () => {
                       <Typography variant="body2" color="text.secondary">
                         {new Date(blog.publishTime).toLocaleDateString()} by {blog.author}
                       </Typography>
-                      {/* Render the excerpt as HTML */}
                       <Typography variant="body2" sx={{ mt: 1, mb: 2 }} component="div">
                         <div dangerouslySetInnerHTML={{ __html: getExcerpt(blog.content) }} />
                       </Typography>
                     </CardContent>
-                    <Button size="small" color="primary" href={`/blogs/${blog._id}`}>
+                    <Button size="small" color="primary" href={`/blogs/${blog.permalink}`}>
                       Continue Reading
                     </Button>
                   </Box>

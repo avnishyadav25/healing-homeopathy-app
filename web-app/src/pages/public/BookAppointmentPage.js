@@ -1,23 +1,34 @@
 // /web-app/src/pages/public/AppointmentPage.js
 
 import React from 'react';
-import { Container } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import AppointmentForm from '../../components/public/AppointmentForm';
 import SectionDivider from '../../components/SectionDivider';
-
+import Template from '../../components/common/Template';
+import homepageCoverImage from '../../assets/homepage-cover.jpg'; // Import the background image
 
 const AppointmentPage = () => {
   return (
-    <div>
-        <Container maxWidth="sm" sx={{ mt: '150px' }}>
-            <AppointmentForm />
+    <Template> 
+      <Box
+        sx={{
+          backgroundImage: `url(${homepageCoverImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '100vh', // Ensures the background covers the viewport height
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          py: 4,
+        }}
+      >
+        <Container maxWidth="sm" sx={{ mt: '150px', bgcolor: 'rgba(255, 255, 255, 0.8)', borderRadius: 2, p: 4 }}>
+          <AppointmentForm />
         </Container>
         <SectionDivider color="#004d40" thickness="3px" margin="40px 0" />
-
-    </div>
-    
-    
-    
+      </Box>
+    </Template>
   );
 };
 

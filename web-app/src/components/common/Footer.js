@@ -13,6 +13,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import IconButton from '@mui/material/IconButton';
 import logo from '../../assets/logo.svg'; // Ensure this path is correct
 import NewsletterForm from './NewsletterForm'; // Import the NewsletterForm
+import SectionDivider from '../SectionDivider'; // Import the NewsletterForm
 
 const logoStyle = {
   width: '157px',
@@ -42,8 +43,9 @@ export default function Footer() {
         py: { xs: 4, sm: 8 },
       }}
     >
+      <SectionDivider color="#004d40" thickness="3px" margin="40px 0" />
       <Container
-        maxWidth="lg"
+        maxWidth="false"
         sx={{
           display: 'flex',
           flexDirection: 'column',

@@ -1,22 +1,49 @@
-// web-app/src/components/Comments.js
-import React, { useState } from 'react';
-import { Box, Typography, Button, TextField } from '@mui/material';
-import JoditEditor from 'jodit-react';
-import axios from 'axios';
-
-const apiUrl = process.env.REACT_APP_API_URL;
+// /web-app/src/components/Comments.js
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Button, TextField, Avatar } from '@mui/material';
+import commentService from '../../services/commentService';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Comments = ({ postId }) => {
-  const [editorContent, setEditorContent] = useState('');
-  const [comments, setComments] = useState([]); // Assuming you will load comments from the server
+  const [comments, setComments] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [text, setText] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Fetch comments for the post
+    const fetchComments = async () => {
+      try {
+        const commentsData = await commentService.fetchCommentsByPostId(postId);
+        setComments(commentsData);
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+
+    fetchComments();
+
+    // Autofill name and email if user is logged in
+    const savedName = localStorage.getItem('name') || sessionStorage.getItem('name');
+    const savedEmail = localStorage.getItem('email') || sessionStorage.getItem('email');
+    if (savedName) {
+      setName(savedName);
+      setIsLoggedIn(true);
+    }
+    if (savedEmail) setEmail(savedEmail);
+  }, [postId]);
 
   const handleCommentSubmit = async () => {
-    if (!editorContent) return;
+    if (!text) return;
+
+    const commentData = { name, email, phone, text, postId };
 
     try {
-      const response = await axios.post(`${apiUrl}/comments`, { postId, content: editorContent });
-      setComments([...comments, response.data]); // Append new comment to list
-      setEditorContent(''); // Clear editor after submission
+      const newComment = await commentService.createComment(commentData);
+      setComments([...comments, newComment]); // Append new comment to list
+      setText(''); // Clear comment text after submission
     } catch (error) {
       console.error('Error submitting comment', error);
     }
@@ -24,25 +51,63 @@ const Comments = ({ postId }) => {
 
   return (
     <Box sx={{ mt: 3 }}>
-      <Typography variant="h6" gutterBottom>Comments</Typography>
+      <Typography variant="h5" gutterBottom align="center" sx={{ fontWeight: 'bold', mb: 3 }}>
+        Comments
+      </Typography>
+
       {comments.map((comment, index) => (
-        <Box key={index} sx={{ mb: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            {comment.author} - {new Date(comment.date).toLocaleDateString()}
-          </Typography>
-          <Typography variant="body1">{comment.content}</Typography>
+        <Box key={index} sx={{ mb: 2, display: 'flex', alignItems: 'flex-start' }}>
+          <Avatar sx={{ mr: 2 }}>
+            <AccountCircleIcon />
+          </Avatar>
+          <Box>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
+              {comment.name} - {new Date(comment.createdAt).toLocaleDateString()}
+            </Typography>
+            <Typography variant="body1">{comment.text}</Typography>
+          </Box>
         </Box>
       ))}
-      <JoditEditor
-        value={editorContent}
-        onChange={newContent => setEditorContent(newContent)}
-        config={{ readonly: false, height: 150 }}
-      />
-      <Button variant="contained" color="primary" onClick={handleCommentSubmit} sx={{ mt: 2 }}>
-        Add Comment
-      </Button>
+
+      <Box component="form" sx={{ mt: 3 }}>
+        <TextField
+          label="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          fullWidth
+          sx={{ mb: 2 }}
+          disabled={isLoggedIn} // Disable if logged in
+        />
+        <TextField
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          sx={{ mb: 2 }}
+          disabled={isLoggedIn} // Disable if logged in
+        />
+        <TextField
+          label="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          fullWidth
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Comment"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          multiline
+          rows={4}
+          fullWidth
+          sx={{ mb: 2 }}
+        />
+        <Button variant="contained" color="primary" onClick={handleCommentSubmit}>
+          Add Comment
+        </Button>
+      </Box>
     </Box>
   );
 };
 
-export default Comments; 
+export default Comments;

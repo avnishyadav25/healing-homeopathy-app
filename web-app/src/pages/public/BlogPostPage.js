@@ -1,42 +1,35 @@
 // web-app/src/pages/BlogPostPage.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import BlogPostDetail from '../../components/BlogPostDetail'; // Import the new component
+import blogService from '../../services/blogService';
+import BlogPostDetail from '../../components/BlogPostDetail';
 import Template from '../../components/common/Template';
 
-
-const apiUrl = process.env.REACT_APP_API_URL; // Use API URL from environment variables
-console.log('API URL:', apiUrl); // Add this line to verify the API URL
-
 const BlogPostPage = () => {
-  const { id } = useParams(); // Get the `id` from URL parameters
+  const { id } = useParams(); // This will capture either ID or permalink
   const [post, setPost] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/blogs/${id}`);
-        setPost(response.data);
-      } catch (error) {
-        console.error('Error fetching the blog post:', error);
+        console.log('#### id = ', id);
+        const data = await blogService.fetchBlogByIdOrPermalink(id);
+        setPost(data);
+      } catch (err) {
+        setError('Error fetching the blog post');
       }
     };
     fetchPost();
   }, [id]);
 
-  /*if (!post) return <div>Loading...</div>;*/
+  if (error) return <div>{error}</div>;
   if (!post) return <div>Loading...</div>;
-if (post.error) return <div>Error loading blog post: {post.error.message}</div>;
 
   return (
-    <div>
-      <Template>
-
-        <BlogPostDetail post={post} /> {/* Use the new component */}
-      </Template>
-      
-    </div>
+    <Template>
+      <BlogPostDetail post={post} />
+    </Template>
   );
 };
 

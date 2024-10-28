@@ -267,7 +267,7 @@ const FeatureSection = () => {
                 height: { xs: 200, sm: 400 },
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${services[selectedServiceIndex].image})`,
+                backgroundImage: `url(${new URL(services[selectedServiceIndex].image, apiUrl).href})`,
                 borderRadius: 2,
                 boxShadow: 3,
                 mb: 4,

@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import HomePage from './pages/public/HomePage';
 import AboutPage from './pages/public/AboutPage';
 import ServicesPage from './pages/public/ServicesPage';
+import BookAppointmentPage from './pages/public/BookAppointmentPage';
 import BlogPage from './pages/public/BlogPage';
 import BlogPostPage from './pages/public/BlogPostPage';
 import ContactPage from './pages/public/ContactPage';
@@ -54,6 +55,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/book-appointment" element={<BookAppointmentPage />} />
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:id" element={<BlogPostPage />} />
             <Route path="/contact" element={<ContactPage />} />
