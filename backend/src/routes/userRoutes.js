@@ -1,16 +1,18 @@
 // /backend/src/routes/userRoutes.js
 const express = require('express');
-const { register } = require('../controllers/userController');
-const { login } = require('../controllers/userController');
-const { getUsers } = require('../controllers/userController');
+const { register, login, getUsers } = require('../controllers/userController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-// Login route
-router.post('/login', login);
 
-// Registration route
+// Login and Registration routes
+router.post('/login', login);
 router.post('/register', register);
+
+// Protected route to get all users (requires authentication)
+router.get('/', authMiddleware, getUsers);
+
 
 
 router.post('/complete-registration', async (req, res) => {

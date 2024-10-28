@@ -39,6 +39,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log('#### email', email);
+  console.log('#### password', password);
 
   try {
     // Check if the user exists
@@ -55,13 +57,16 @@ const login = async (req, res) => {
 
     // Generate a JWT token
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log('#### token', token);
 
-    res.status(200).json({ token });
+    // Include user role, name, and email in the response
+    res.status(200).json({ token, role: user.role, name: user.name, email: user.email });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 const getUsers = async (req, res) => {
   try {

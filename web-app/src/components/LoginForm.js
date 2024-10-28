@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Box, Button, TextField, Typography, Avatar, Grid, Link, Alert, FormControlLabel, Checkbox } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FaGoogle } from 'react-icons/fa';
+import authService from '../services/authService';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -14,36 +14,35 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const apiUrl = process.env.REACT_APP_API_URL;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
-      const response = await axios.post(`${apiUrl}/users/login`, { email, password });
+      const { token, role } = await authService.login(email, password);
 
-      if (response.data && response.data.token) {
-        if (rememberMe) {
-          localStorage.setItem('token', response.data.token);
-        } else {
-          sessionStorage.setItem('token', response.data.token);
-        }
-        navigate('/admin'); 
+      // Store token and role based on "Remember me" option
+      if (rememberMe) { 
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
       } else {
-        setError('Login failed. No token received.');
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('role', role);
+      }
+
+      // Redirect based on role
+      if (role === 'Admin' || role === 'Super Admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError('Login failed. Please check your credentials and try again.');
-      }
+      setError(error.message || 'Login failed. Please check your credentials and try again.');
     }
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${apiUrl}/auth/google`;
+    window.location.href = `${authService.apiUrl}/auth/google`;
   };
 
   return (
