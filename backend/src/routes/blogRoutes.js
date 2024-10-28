@@ -3,12 +3,11 @@ const express = require('express');
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
-const router = express.Router();
+const router = express.Router(); 
 const {
   getBlogs,
   getAllBlogs,
-  //getBlogById,
-  getBlogByIdOrPermalink, // Updated function name
+  getBlogByIdOrPermalink, // Updated to handle both ID and permalink
   getBlogsByAuthor,
   createOrUpdateBlog,
   createBlog,
@@ -22,7 +21,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const { permalink, title } = req.body;
     const blogUrl = permalink || (title ? title.toLowerCase().replace(/ /g, '-') : 'default');
-    const dir = path.join(__dirname, '../../web-app/public/assets/blog', blogUrl);
+    const dir = path.join(__dirname, '../../../web-app/public/assets/blog', blogUrl);
 
     // Create directory if it does not exist
     if (!fs.existsSync(dir)) {
@@ -32,7 +31,9 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + path.extname(file.originalname);
+    const { permalink, title } = req.body;
+    const blogUrl = permalink || (title ? title.toLowerCase().replace(/ /g, '-') : 'default');
+    const uniqueName = `${blogUrl}${path.extname(file.originalname)}`; // Save as blog-name.jpg or .png
     cb(null, uniqueName);
   }
 });
@@ -67,10 +68,7 @@ const ensureDirExists = (req, res, next) => {
 // Blog routes
 router.get('/', getBlogs); // Get blogs with optional status and pagination
 router.get('/all', getAllBlogs); // Get all blogs
-//router.get('/:id', getBlogById); // Get a blog by ID
-// Updated route to use `getBlogByIdOrPermalink` instead of `getBlogById`
 router.get('/:identifier', getBlogByIdOrPermalink); // Supports both ID and permalink
-
 router.get('/author/:author', getBlogsByAuthor); // Get blogs by author
 
 router.post('/create', ensureDirExists, upload, createBlog); // Create a new blog with image upload

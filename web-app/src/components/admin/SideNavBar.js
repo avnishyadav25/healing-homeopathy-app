@@ -80,10 +80,10 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
         </ListItem>
         <Collapse in={open.blog && !collapsed} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button component={Link} to="/admin/blog/all-blogs">
+            <ListItem button component={Link} to="/admin/blogs">
               <ListItemText inset primary="All Blogs" />
             </ListItem>
-            <ListItem button component={Link} to="/admin/blog/create-blog">
+            <ListItem button component={Link} to="/admin/blogs/create">
               <ListItemText inset primary="Create Blog" />
             </ListItem>
           </List>

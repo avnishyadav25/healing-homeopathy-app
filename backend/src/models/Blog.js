@@ -14,7 +14,7 @@ const blogSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   archived: { type: Boolean, default: false },
-  status: { type: String, enum: ['draft', 'published', 'scheduled'], default: 'draft' }, // New field for status
+  status: { type: String, enum: ['draft', 'published', 'scheduled', 'archived'], default: 'draft' }, // New field for status
   scheduledTime: { type: Date } // New field for scheduled publish time
 });
 
