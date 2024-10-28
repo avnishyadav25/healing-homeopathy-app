@@ -8,7 +8,6 @@ import FeatureSection from '../../components/FeatureSection';
 import BlogSection from '../../components/BlogSection';
 import TestimonialsSection from '../../components/TestimonialsSection';
 import NewsletterSection from '../../components/NewsletterSection';
-import CertificationsSection from '../../components/CertificationsSection';
 import ContactUsSection from '../../components/ContactUsSection';
 import NewsletterSignupSection from '../../components/public/NewsletterSignupSection';
 import homepageCoverImage from '../../assets/homepage-cover.jpg'; // Ensure you have an appropriate image
