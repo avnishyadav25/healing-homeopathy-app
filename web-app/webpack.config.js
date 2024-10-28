@@ -1,5 +1,5 @@
 module.exports = {
     resolve: {
-        fallback: { path: false }
+        fallback: { path: require.resolve('path-browserify') }
     },
 };

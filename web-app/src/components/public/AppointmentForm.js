@@ -16,7 +16,7 @@ import {
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import ReCAPTCHA from 'react-google-recaptcha';
 import axios from 'axios';
-require('dotenv').config();
+//require('dotenv').config();
 
 const AppointmentForm = () => {
   const theme = useTheme();
