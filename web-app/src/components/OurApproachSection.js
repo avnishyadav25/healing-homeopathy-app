@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, Fade, Slide, Card, CardMedia, CardContent } from '@mui/material';
+import { Box, Container, Grid, Typography, Fade, Slide, Card, CardMedia } from '@mui/material';
 import approachImage from '../assets/approach-image.jpg'; // Ensure the path is correct
 
 const OurApproachSection = () => {

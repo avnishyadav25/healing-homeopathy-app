@@ -1,17 +1,44 @@
 // /src/components/admin/TopNavBar.js
-import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Box, Badge } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Box,
+  Badge,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddIcon from '@mui/icons-material/Add';
 
-const TopNavBar = ({ onMenuClick, username }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [notificationsEl, setNotificationsEl] = React.useState(null);
-  const [addEl, setAddEl] = React.useState(null);
+const TopNavBar = ({ onMenuClick }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [notificationsEl, setNotificationsEl] = useState(null);
+  const [addEl, setAddEl] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
+  const navigate = useNavigate();
 
-  // Handle profile menu
+  useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const name = localStorage.getItem('name') || sessionStorage.getItem('name');
+    const role = localStorage.getItem('role') || sessionStorage.getItem('role');
+
+    if (token) {
+      setIsLoggedIn(true);
+      setUserName(name);
+      setUserRole(role);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -20,7 +47,13 @@ const TopNavBar = ({ onMenuClick, username }) => {
     setAnchorEl(null);
   };
 
-  // Handle notifications menu
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+
   const handleNotificationsClick = (event) => {
     setNotificationsEl(event.currentTarget);
   };
@@ -29,7 +62,6 @@ const TopNavBar = ({ onMenuClick, username }) => {
     setNotificationsEl(null);
   };
 
-  // Handle add menu
   const handleAddClick = (event) => {
     setAddEl(event.currentTarget);
   };
@@ -62,25 +94,33 @@ const TopNavBar = ({ onMenuClick, username }) => {
         <Menu
           id="add-menu"
           anchorEl={addEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           open={Boolean(addEl)}
           onClose={handleAddClose}
         >
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/product/add-product">Add Product</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/blog/create-blog">Add Blog</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/user/add-user">Add User</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/appointment/add-appointment">Add Appointment User</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/newsletter/add-newsletter-user">Add Newsletter User</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/appointment/add-appointment-template">Add Appointment Template</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/newsletter/add-newsletter-template">Add Newsletter Template</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/product/add-product">
+            Add Product
+          </MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/blog/create-blog">
+            Add Blog
+          </MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/user/add-user">
+            Add User
+          </MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/appointment/add-appointment">
+            Add Appointment User
+          </MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/newsletter/add-newsletter-user">
+            Add Newsletter User
+          </MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/appointment/add-appointment-template">
+            Add Appointment Template
+          </MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/newsletter/add-newsletter-template">
+            Add Newsletter Template
+          </MenuItem>
         </Menu>
 
         {/* Notifications Icon */}
@@ -99,15 +139,9 @@ const TopNavBar = ({ onMenuClick, username }) => {
         <Menu
           id="notifications-menu"
           anchorEl={notificationsEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           open={Boolean(notificationsEl)}
           onClose={handleNotificationsClose}
         >
@@ -118,35 +152,42 @@ const TopNavBar = ({ onMenuClick, username }) => {
         </Menu>
 
         {/* Profile Icon */}
-        <IconButton
-          edge="end"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose}>My Account</MenuItem>
-          <MenuItem onClick={handleClose}>My Settings</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Menu>
+        {isLoggedIn ? (
+          <>
+            <Typography variant="body1" sx={{ mr: 2 }}>
+              {userName}
+            </Typography>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              keepMounted
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => navigate('/profile')}>My Profile</MenuItem>
+              {userRole === 'Admin' || userRole === 'Super Admin' ? (
+                <MenuItem onClick={() => navigate('/admin')}>Admin Dashboard</MenuItem>
+              ) : null}
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <MenuItem component="a" href="/login">
+            Login
+          </MenuItem>
+        )}
       </Toolbar>
     </AppBar>
   );

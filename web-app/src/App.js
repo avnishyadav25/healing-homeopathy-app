@@ -1,6 +1,6 @@
 // /web-app/src/App.js
 
-import React, { useMemo, useState, createContext, useContext } from 'react';
+import React, { useMemo, useState, createContext } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
@@ -22,8 +22,6 @@ import CreateBlogPage from './pages/admin/blog/CreateBlogPage';
 import CommentsPage from './pages/admin/blog/CommentsPage';
 import MediaPage from './pages/admin/blog/MediaPage';
 
-import Footer from './components/common/Footer';
-import NavigationBar from './components/common/NavigationBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
 
@@ -52,27 +50,27 @@ function App() {
         <CssBaseline />
         <Router>
           <Routes>
-            {/* Public Routes with Header and Footer */}
-            <Route element={<><NavigationBar /><Footer /></>}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/blogs" element={<BlogPage />} />
-              <Route path="/blogs/:id" element={<BlogPostPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/order-medicine" element={<OrderMedicinePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/role-selection" element={<RoleSelectionPage />} />
-            </Route>
+            {/* Public Routes - wrapped with the Template component directly in each page */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/blogs" element={<BlogPage />} />
+            <Route path="/blogs/:id" element={<BlogPostPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/order-medicine" element={<OrderMedicinePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/role-selection" element={<RoleSelectionPage />} />
 
             {/* Admin Routes with AdminPageTemplate */}
             <Route element={<ProtectedRoute requiredRole="Super Admin" />}>
+             {/*} <Route element={<AdminPageTemplate />}>*/}
                 <Route path="/admin" element={<AdminDashboardPage />} />
                 <Route path="/admin/blog/all-blogs" element={<AllBlogsPage />} />
                 <Route path="/admin/blog/create-blog" element={<CreateBlogPage />} />
                 <Route path="/admin/blog/comments" element={<CommentsPage />} />
                 <Route path="/admin/blog/media" element={<MediaPage />} />
+             {/* </Route>*/}
             </Route>
 
             {/* Catch-all for unknown routes */}
