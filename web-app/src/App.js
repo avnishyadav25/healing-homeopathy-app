@@ -20,8 +20,11 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 
 import AllBlogsPage from './pages/admin/blog/AllBlogsPage';
 import CreateBlogPage from './pages/admin/blog/CreateBlogPage';
+import EditBlogPage from './pages/admin/blog/EditBlogPage';
 import CommentsPage from './pages/admin/blog/CommentsPage';
 import MediaPage from './pages/admin/blog/MediaPage';
+import BlogPreviewPage from './pages/admin/blog/BlogPreviewPage';
+
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
@@ -68,10 +71,13 @@ function App() {
             <Route element={<ProtectedRoute requiredRole="Super Admin" />}>
              {/*} <Route element={<AdminPageTemplate />}>*/}
                 <Route path="/admin" element={<AdminDashboardPage />} />
-                <Route path="/admin/blog/all-blogs" element={<AllBlogsPage />} />
-                <Route path="/admin/blog/create-blog" element={<CreateBlogPage />} />
-                <Route path="/admin/blog/comments" element={<CommentsPage />} />
-                <Route path="/admin/blog/media" element={<MediaPage />} />
+                <Route path="/admin/blogs" element={<AllBlogsPage />} />
+                <Route path="/admin/blogs/create" element={<CreateBlogPage />} />
+                <Route path="/admin/blogs/edit/:id" element={<EditBlogPage />} />
+                <Route path="/admin/blogs/comments" element={<CommentsPage />} />
+                <Route path="/admin/blogs/media" element={<MediaPage />} />
+                <Route path="/admin/blog/preview" element={<BlogPreviewPage />} />
+
              {/* </Route>*/}
             </Route>
 

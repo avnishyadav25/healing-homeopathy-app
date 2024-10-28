@@ -50,7 +50,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/users', userRoutes);
-app.use('/blogs', blogRoutes);
+app.use('/blogs', blogRoutes); 
 app.use('/media', mediaRoutes);
 app.use('/contact', contactUsRoutes);
 app.use('/newsletters', newsletterRoutes);

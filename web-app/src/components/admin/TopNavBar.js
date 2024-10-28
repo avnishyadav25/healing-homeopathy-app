@@ -103,7 +103,7 @@ const TopNavBar = ({ onMenuClick }) => {
           <MenuItem onClick={handleAddClose} component="a" href="/admin/product/add-product">
             Add Product
           </MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin/blog/create-blog">
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/blogs/create">
             Add Blog
           </MenuItem>
           <MenuItem onClick={handleAddClose} component="a" href="/admin/user/add-user">

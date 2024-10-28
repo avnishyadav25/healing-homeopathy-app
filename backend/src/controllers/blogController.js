@@ -3,21 +3,32 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 
-// Helper function to save featured images in `web-app/public/assets/blog/[blog-url]`
+// Helper function to save featured images in `web-app/public/assets/blog/[blog-url]/[blog-name].jpg`
 const saveImage = (file, blogUrl) => {
   const dirPath = path.join(__dirname, '../../../web-app/public/assets/blog', blogUrl);
+  const imagePath = path.join(dirPath, `${blogUrl}${path.extname(file.originalname)}`);
+
+  // Create directory if it doesn't exist
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
-  const imagePath = path.join(dirPath, file.filename);
+
+  // Check if an image with the same name exists and remove it
+  if (fs.existsSync(imagePath)) {
+    fs.unlinkSync(imagePath);
+  }
+
+  // Move the new image file
   fs.renameSync(file.path, imagePath);
-  return `/assets/blog/${blogUrl}/${file.filename}`;
+
+  return `/blog/${blogUrl}/${blogUrl}${path.extname(file.originalname)}`;
 };
+
 
 // Create a new blog
 const createBlog = async (req, res) => {
   try {
-    const { title, content, tags, category, permalink, author, publishTime } = req.body;
+    const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
     const blogUrl = permalink || title.toLowerCase().replace(/ /g, '-');
     const featuredImage = req.file ? saveImage(req.file, blogUrl) : null;
 
@@ -30,15 +41,118 @@ const createBlog = async (req, res) => {
       author,
       publishTime,
       featuredImage,
+      status
     });
 
     await newBlog.save();
     res.status(201).json({ message: 'Blog created successfully', blog: newBlog });
   } catch (error) {
-    console.log('#### error = '+JSON.stringify(error));
     res.status(500).json({ message: 'Error creating blog', error });
   }
 };
+
+//Update Blog
+const updateBlog = async (req, res) => {
+  try {
+    const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
+    const { id } = req.params;
+    console.log('#### hello 1', req.body);
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+
+    const blogUrl = permalink || blog.permalink || title.toLowerCase().replace(/ /g, '-');
+    let featuredImage = blog.featuredImage;
+
+    if (req.file) {
+      // Remove old image if it exists
+      if (featuredImage) {
+        const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+      // Save new image
+      featuredImage = saveImage(req.file, blogUrl);
+    }
+
+    blog.title = title || blog.title;
+    blog.content = content || blog.content;
+    blog.tags = tags ? tags.split(',').map(tag => tag.trim()) : blog.tags;
+    blog.category = category || blog.category;
+    blog.permalink = blogUrl;
+    blog.author = author || blog.author;
+    blog.publishTime = publishTime || blog.publishTime;
+    blog.status = status || blog.status;
+    blog.featuredImage = featuredImage;
+    blog.updatedAt = Date.now();
+
+    await blog.save();
+    res.status(200).json({ message: 'Blog updated successfully', blog });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating blog', error });
+  }
+};
+
+
+
+const createOrUpdateBlog = async (req, res) => {
+  try {
+    const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
+    const { id } = req.params;
+    const blogUrl = permalink || title.toLowerCase().replace(/ /g, '-');
+
+    let blog = id ? await Blog.findById(id) : null;
+    let featuredImage = blog ? blog.featuredImage : null;
+
+    if (req.file) {
+      if (featuredImage) {
+        const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+      featuredImage = saveImage(req.file, blogUrl);
+    }
+
+    if (blog) {
+      // Update existing blog
+      blog.title = title || blog.title;
+      blog.content = content || blog.content;
+      blog.tags = tags ? tags.split(',').map(tag => tag.trim()) : blog.tags;
+      blog.category = category || blog.category;
+      blog.permalink = blogUrl;
+      blog.author = author || blog.author;
+      blog.publishTime = publishTime || blog.publishTime;
+      blog.status = status || blog.status;
+      blog.featuredImage = featuredImage;
+      blog.updatedAt = Date.now();
+
+      await blog.save();
+      res.status(200).json({ message: 'Blog updated successfully', blog });
+    } else {
+      // Create new blog
+      blog = new Blog({
+        title,
+        content,
+        tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+        category,
+        permalink: blogUrl,
+        author,
+        publishTime,
+        featuredImage,
+        status
+      });
+
+      await blog.save();
+      res.status(201).json({ message: 'Blog created successfully', blog });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error processing blog', error });
+  }
+};
+
 
 // Get all blogs with pagination and optional status
 const getBlogs = async (req, res) => {
@@ -124,48 +238,7 @@ const getBlogsByAuthor = async (req, res) => {
   }
 };
 
-// Update a blog
-const updateBlog = async (req, res) => {
-  try {
-    const { title, content, tags, category, permalink, author, publishTime } = req.body;
-    const { id } = req.params;
 
-    const blog = await Blog.findById(id);
-    if (!blog) {
-      return res.status(404).json({ message: 'Blog not found' });
-    }
-
-    const blogUrl = permalink || blog.permalink || title.toLowerCase().replace(/ /g, '-');
-    let featuredImage = blog.featuredImage;
-
-    if (req.file) {
-      // Remove old image if it exists
-      if (featuredImage) {
-        const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-      // Save new image
-      featuredImage = saveImage(req.file, blogUrl);
-    }
-
-    blog.title = title || blog.title;
-    blog.content = content || blog.content;
-    blog.tags = tags ? tags.split(',').map(tag => tag.trim()) : blog.tags;
-    blog.category = category || blog.category;
-    blog.permalink = blogUrl;
-    blog.author = author || blog.author;
-    blog.publishTime = publishTime || blog.publishTime;
-    blog.featuredImage = featuredImage;
-    blog.updatedAt = Date.now();
-
-    await blog.save();
-    res.status(200).json({ message: 'Blog updated successfully', blog });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating blog', error });
-  }
-};
 
 // Delete a blog
 const deleteBlog = async (req, res) => {
@@ -206,60 +279,7 @@ const archiveBlog = async (req, res) => {
   }
 };
 
-// Create or Update a blog
-const createOrUpdateBlog = async (req, res) => {
-  try {
-    const { title, content, tags, category, permalink, author, publishTime } = req.body;
-    const { id } = req.params;
-    const blogUrl = permalink || title.toLowerCase().replace(/ /g, '-');
 
-    let blog = id ? await Blog.findById(id) : null;
-    let featuredImage = blog ? blog.featuredImage : null;
-
-    if (req.file) {
-      if (featuredImage) {
-        const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-      featuredImage = saveImage(req.file, blogUrl);
-    }
-
-    if (blog) {
-      // Update existing blog
-      blog.title = title || blog.title;
-      blog.content = content || blog.content;
-      blog.tags = tags ? tags.split(',').map(tag => tag.trim()) : blog.tags;
-      blog.category = category || blog.category;
-      blog.permalink = blogUrl;
-      blog.author = author || blog.author;
-      blog.publishTime = publishTime || blog.publishTime;
-      blog.featuredImage = featuredImage;
-      blog.updatedAt = Date.now();
-
-      await blog.save();
-      res.status(200).json({ message: 'Blog updated successfully', blog });
-    } else {
-      // Create new blog
-      blog = new Blog({
-        title,
-        content,
-        tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-        category,
-        permalink: blogUrl,
-        author,
-        publishTime,
-        featuredImage,
-      });
-
-      await blog.save();
-      res.status(201).json({ message: 'Blog created successfully', blog });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error processing blog', error });
-  }
-};
 
 module.exports = {
   createBlog,
