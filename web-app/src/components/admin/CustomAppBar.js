@@ -13,17 +13,17 @@ import { Link } from 'react-router-dom';
 const CustomUserMenu = (props) => (
   <UserMenu {...props}>
     <MenuItemLink
-      to="/admin-dashboard/account/profile"
+      to="/admin/account/profile"
       primaryText="My Profile"
       leftIcon={<AccountCircleIcon />}
     />
     <MenuItemLink
-      to="/admin-dashboard/account/settings"
+      to="/admin/account/settings"
       primaryText="My Settings"
       leftIcon={<AccountCircleIcon />}
     />
     <MenuItemLink
-      to="/admin-dashboard/account/logout"
+      to="/admin/account/logout"
       primaryText="Logout"
       leftIcon={<AccountCircleIcon />}
     />
@@ -45,7 +45,7 @@ const CustomAppBar = (props) => {
           </IconButton>
         </Tooltip>
         <Tooltip title={translate('Add Content')} placement="bottom">
-          <IconButton color="inherit" component={Link} to="/admin-dashboard/add-content">
+          <IconButton color="inherit" component={Link} to="/admin/add-content">
             <AddIcon />
           </IconButton>
         </Tooltip>

@@ -91,21 +91,21 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/role-selection" element={<RoleSelectionPage />} />
-          <Route path="/admin-dashboard" element={<AdminDashboardPage />} />
-        <Route path="/admin-dashboard/blog/all-blogs" element={<AllBlogsPage />} />
-        <Route path="/admin-dashboard/blog/create-blog" element={<CreateBlogPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/blog/all-blogs" element={<AllBlogsPage />} />
+        <Route path="/admin/blog/create-blog" element={<CreateBlogPage />} />
         <Route path="/admin/blogs/create" element={<CreateBlogPage />} />
         <Route path="/admin/blogs/edit" element={<CreateBlogPage />} />
-        <Route path="/admin-dashboard/blog/comments" element={<CommentsPage />} />
-        <Route path="/admin-dashboard/blog/media" element={<MediaPage />} />
-        <Route path="/admin-dashboard/product/add-product" element={<AddProductPage />} />
-        <Route path="/admin-dashboard/blog/create-blog" element={<AddBlogPage />} />
+        <Route path="/admin/blog/comments" element={<CommentsPage />} />
+        <Route path="/admin/blog/media" element={<MediaPage />} />
+        <Route path="/admin/product/add-product" element={<AddProductPage />} />
+        <Route path="/admin/blog/create-blog" element={<AddBlogPage />} />
 
-        <Route path="/admin-dashboard/user/add-user" element={<AddUserPage />} />
-        <Route path="/admin-dashboard/appointment/add-appointment" element={<AddAppointmentUserPage />} />
-        <Route path="/admin-dashboard/newsletter/add-newsletter-user" element={<AddNewsletterUserPage />} />
-        <Route path="/admin-dashboard/appointment/add-appointment-template" element={<AddAppointmentTemplatePage />} />
-        <Route path="/admin-dashboard/newsletter/add-newsletter-template" element={<AddNewsletterTemplatePage />} />
+        <Route path="/admin/user/add-user" element={<AddUserPage />} />
+        <Route path="/admin/appointment/add-appointment" element={<AddAppointmentUserPage />} />
+        <Route path="/admin/newsletter/add-newsletter-user" element={<AddNewsletterUserPage />} />
+        <Route path="/admin/appointment/add-appointment-template" element={<AddAppointmentTemplatePage />} />
+        <Route path="/admin/newsletter/add-newsletter-template" element={<AddNewsletterTemplatePage />} />
         <Route path="/admin/services" element={<ServicesTab />} />
         <Route path="/admin/services/:id" element={<ServiceDetail />} />
       

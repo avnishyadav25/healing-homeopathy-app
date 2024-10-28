@@ -29,7 +29,7 @@ const LoginForm = () => {
         } else {
           sessionStorage.setItem('token', response.data.token);
         }
-        navigate('/admin-dashboard'); 
+        navigate('/admin'); 
       } else {
         setError('Login failed. No token received.');
       }

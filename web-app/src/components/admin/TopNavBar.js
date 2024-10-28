@@ -74,13 +74,13 @@ const TopNavBar = ({ onMenuClick, username }) => {
           open={Boolean(addEl)}
           onClose={handleAddClose}
         >
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/product/add-product">Add Product</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/blog/create-blog">Add Blog</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/user/add-user">Add User</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/appointment/add-appointment">Add Appointment User</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/newsletter/add-newsletter-user">Add Newsletter User</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/appointment/add-appointment-template">Add Appointment Template</MenuItem>
-          <MenuItem onClick={handleAddClose} component="a" href="/admin-dashboard/newsletter/add-newsletter-template">Add Newsletter Template</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/product/add-product">Add Product</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/blog/create-blog">Add Blog</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/user/add-user">Add User</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/appointment/add-appointment">Add Appointment User</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/newsletter/add-newsletter-user">Add Newsletter User</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/appointment/add-appointment-template">Add Appointment Template</MenuItem>
+          <MenuItem onClick={handleAddClose} component="a" href="/admin/newsletter/add-newsletter-template">Add Newsletter Template</MenuItem>
         </Menu>
 
         {/* Notifications Icon */}
