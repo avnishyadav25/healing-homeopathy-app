@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, AppBar, Toolbar, Button, Container, Typography, MenuItem, Drawer, Divider, Avatar, IconButton, Menu } from '@mui/material';
+import { Box, AppBar, Toolbar, Button, Container, Typography, MenuItem, Drawer, Divider, IconButton, Menu } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ToggleColorMode from '../ToggleColorMode';
-import logo from '../../assets/logo.svg'; // Ensure this path is correct
+import logo from '../../assets/logo.svg';
 
 const logoStyle = {
   width: '140px',
@@ -60,6 +60,9 @@ function NavigationBar({ mode, toggleColorMode }) {
     setOpen(newOpen);
   };
 
+  // Define color based on the theme mode
+  const navTextColor = mode === 'light' ? 'black' : 'white';
+
   return (
     <div>
       <AppBar
@@ -71,7 +74,7 @@ function NavigationBar({ mode, toggleColorMode }) {
           mt: 2,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="false">
           <Toolbar
             variant="regular"
             sx={(theme) => ({
@@ -113,20 +116,29 @@ function NavigationBar({ mode, toggleColorMode }) {
               ) : (
                 <Typography
                   variant="h6"
-                  color="inherit"
                   noWrap
-                  sx={{ cursor: 'pointer' }}
+                  sx={{ cursor: 'pointer', color: navTextColor }}
                   onClick={handleLogoClick}
                 >
                   Healing Homeopathy
                 </Typography>
               )}
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <MenuItem component={Link} to="/about">About</MenuItem>
-                <MenuItem component={Link} to="/services">Services</MenuItem>
-                <MenuItem component={Link} to="/blogs">Blogs</MenuItem>
-                <MenuItem component={Link} to="/contact">Contact</MenuItem>
-                <MenuItem component={Link} to="/order-medicine">Order Medicine</MenuItem>
+                <MenuItem component={Link} to="/about">
+                  <Typography color={navTextColor}>About</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to="/services">
+                  <Typography color={navTextColor}>Services</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to="/blogs">
+                  <Typography color={navTextColor}>Blogs</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to="/contact">
+                  <Typography color={navTextColor}>Contact</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to="/order-medicine">
+                  <Typography color={navTextColor}>Order Medicine</Typography>
+                </MenuItem>
               </Box>
             </Box>
             <Box
@@ -139,7 +151,7 @@ function NavigationBar({ mode, toggleColorMode }) {
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
               {isLoggedIn ? (
                 <>
-                  <IconButton onClick={handleMenuClick} color="inherit">
+                  <IconButton onClick={handleMenuClick} sx={{ color: navTextColor }}>
                     <AccountCircle />
                   </IconButton>
                   <Menu
@@ -156,7 +168,7 @@ function NavigationBar({ mode, toggleColorMode }) {
                 </>
               ) : (
                 <>
-                  <Button color="primary" variant="text" size="small" component={Link} to="/login">
+                  <Button color="inherit" variant="text" size="small" component={Link} to="/login" sx={{ color: navTextColor }}>
                     Login
                   </Button>
                   <Button color="primary" variant="contained" size="small" component={Link} to="/register">
@@ -166,25 +178,35 @@ function NavigationBar({ mode, toggleColorMode }) {
               )}
             </Box>
             <Box sx={{ display: { sm: '', md: 'none' } }}>
-              <Button
+              <IconButton
                 variant="text"
-                color="primary"
+                color="inherit"
                 aria-label="menu"
                 onClick={toggleDrawer(true)}
-                sx={{ minWidth: '30px', p: '4px' }}
+                sx={{ minWidth: '30px', p: '4px', color: navTextColor }}
               >
                 <MenuIcon />
-              </Button>
+              </IconButton>
               <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
                 <Box sx={{ minWidth: '60dvw', p: 2, backgroundColor: 'background.paper', flexGrow: 1 }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end', flexGrow: 1 }}>
                     <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
-                  <MenuItem component={Link} to="/about">About</MenuItem>
-                  <MenuItem component={Link} to="/services">Services</MenuItem>
-                  <MenuItem component={Link} to="/blogs">Blogs</MenuItem>
-                  <MenuItem component={Link} to="/contact">Contact</MenuItem>
-                  <MenuItem component={Link} to="/order-medicine">Order Medicine</MenuItem>
+                  <MenuItem component={Link} to="/about" sx={{ color: navTextColor }}>
+                    About
+                  </MenuItem>
+                  <MenuItem component={Link} to="/services" sx={{ color: navTextColor }}>
+                    Services
+                  </MenuItem>
+                  <MenuItem component={Link} to="/blogs" sx={{ color: navTextColor }}>
+                    Blogs
+                  </MenuItem>
+                  <MenuItem component={Link} to="/contact" sx={{ color: navTextColor }}>
+                    Contact
+                  </MenuItem>
+                  <MenuItem component={Link} to="/order-medicine" sx={{ color: navTextColor }}>
+                    Order Medicine
+                  </MenuItem>
                   <Divider />
                   {isLoggedIn ? (
                     <>

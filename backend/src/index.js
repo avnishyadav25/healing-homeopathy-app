@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('./config/passportConfig');
-const blogRoutes = require('./routes/blogRoutes'); // Import blog routes
+const path = require('path');
+require('dotenv').config();
+
+// Import routes
+const blogRoutes = require('./routes/blogRoutes');
 const mediaRoutes = require('./routes/mediaRoutes');
 const contactUsRoutes = require('./routes/contactUsRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
@@ -15,16 +19,10 @@ const newsletterRoutes = require('./routes/newsletterRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 
-
-
-const path = require('path');
-
-require('dotenv').config();
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Set the strictQuery option
+// Set mongoose strictQuery option
 mongoose.set('strictQuery', false);
 
 // Database connection
@@ -32,8 +30,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB connected'))
-.catch((err) => console.error('MongoDB connection error:', err));
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.error('MongoDB connection error:', err));
 
 // Middleware
 app.use(cors());
@@ -41,7 +39,7 @@ app.use(express.json());
 
 // Session configuration
 app.use(session({
-  secret: '1234567890', // Replace with your secret
+  secret: process.env.SESSION_SECRET || '1234567890', // Use environment variable for security
   resave: false,
   saveUninitialized: true,
 }));
@@ -50,32 +48,21 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-// Routes
 // Routes
 app.use('/users', userRoutes);
-app.use('/blogs', blogRoutes); // Add blog routes
+app.use('/blogs', blogRoutes);
 app.use('/media', mediaRoutes);
 app.use('/contact', contactUsRoutes);
 app.use('/newsletters', newsletterRoutes);
 app.use('/appointments', appointmentRoutes);
 app.use('/products', productRoutes);
-app.use('/blogs', blogRoutes);
 app.use('/comments', commentRoutes);
 app.use('/newsletter-users', newsletterUserRoutes);
 app.use('/services', serviceRoutes);
-app.use('/upload', uploadRoutes); // API endpoint for uploads
+app.use('/upload', uploadRoutes);
 
 // Serve uploaded files statically
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/uploads', (req, res, next) => {
-  console.log(`Serving file: ${req.path}`);
-  console.log(path.join(__dirname, 'uploads') +req.path);
-  next();
-}, express.static(path.join(__dirname, 'uploads')));
-
-
-
+app.use('/', express.static(path.join(__dirname, '../../web-app/public/assets')));
 
 // Google OAuth routes
 app.get('/auth/google',
