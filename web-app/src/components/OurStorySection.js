@@ -36,7 +36,7 @@ const OurStorySection = () => {
               <Card sx={{ boxShadow: 'none', bgcolor: 'transparent' }}>
                 <CardContent>
                   <Typography variant="body1" color="text.secondary" paragraph>
-                    Healing Homoeopathy was founded by Dr. Aparna Singh, a passionate advocate for natural medicine with over 4 years of experience in homeopathy. Our journey began with a vision to make homeopathic care accessible to everyone, blending ancient practices with modern science to offer a truly holistic approach to health.
+                    Healing Homoeopathy was founded by Dr. Aparna Singh, a passionate advocate for natural medicine with over 4 years of experience in Homoeopathy. Our journey began with a vision to make homeopathic care accessible to everyone, blending ancient practices with modern science to offer a truly holistic approach to health.
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
                     From humble beginnings, we have grown into a trusted name in homeopathic care, known for our commitment to patient wellness and our innovative approach to natural healing. Our milestones include numerous successful treatments, a growing community of satisfied patients, and recognition in the field of natural medicine.

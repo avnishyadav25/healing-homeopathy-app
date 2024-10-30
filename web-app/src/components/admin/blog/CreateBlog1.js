@@ -27,7 +27,7 @@ const CreateBlog = () => {
   const [category, setCategory] = useState('');
   const [featuredImage, setFeaturedImage] = useState(null);
   const [permalink, setPermalink] = useState('');
-  const [author, setAuthor] = useState('Healing Homeopathy');
+  const [author, setAuthor] = useState('Healing Homoeopathy');
   const [publishTime, setPublishTime] = useState(new Date());
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const editor = useRef(null);

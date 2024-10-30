@@ -10,7 +10,7 @@ const teamMembers = [
     name: "Dr. Aparna Singh",
     designation: "Founder & Lead Practitioner",
     image: teamMember1,
-    description: "With over 4 years of experience in homeopathy, Dr. Aparna Singh is dedicated to providing personalized care and holistic treatment to all her patients.",
+    description: "With over 4 years of experience in Homoeopathy, Dr. Aparna Singh is dedicated to providing personalized care and holistic treatment to all her patients.",
   },
   {
     name: "Dr. John Doe",

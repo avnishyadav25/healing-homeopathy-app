@@ -37,7 +37,7 @@ const testimonials = [
   },
   {
     name: "Chris Lee",
-    feedback: "I was skeptical about homeopathy at first, but the results speak for themselves. Healing Homoeopathy's approach to treating the whole person really works.",
+    feedback: "I was skeptical about Homoeopathy at first, but the results speak for themselves. Healing Homoeopathy's approach to treating the whole person really works.",
     image: customerImage5,
   },
   {

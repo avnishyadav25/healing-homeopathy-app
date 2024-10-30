@@ -126,7 +126,7 @@ const register = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: user.email,
-      subject: 'Verify your email for Healing Homeopathy',
+      subject: 'Verify your email for Healing Homoeopathy',
       text: `Please verify your email by clicking the following link: ${process.env.BASE_URL}/verify-email?token=${user._id}`,
     };
 

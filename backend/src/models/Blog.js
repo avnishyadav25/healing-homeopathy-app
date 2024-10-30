@@ -9,7 +9,7 @@ const blogSchema = new mongoose.Schema({
   category: { type: String },
   featuredImage: { type: String },
   permalink: { type: String, unique: true },
-  author: { type: String, default: 'Healing Homeopathy' },
+  author: { type: String, default: 'Healing Homoeopathy' },
   publishTime: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

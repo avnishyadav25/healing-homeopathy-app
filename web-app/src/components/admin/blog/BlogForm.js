@@ -23,7 +23,7 @@ const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
   const [tags, setTags] = useState(blogData?.tags.join(', ') || '');
   const [category, setCategory] = useState(blogData?.category || '');
   const [permalink, setPermalink] = useState(blogData?.permalink || '');
-  const [author, setAuthor] = useState(blogData?.author || 'Healing Homeopathy');
+  const [author, setAuthor] = useState(blogData?.author || 'Healing Homoeopathy');
   const [publishTime, setPublishTime] = useState(blogData?.publishTime || new Date());
   const [featuredImage, setFeaturedImage] = useState(blogData?.featuredImage || null);
   const [status, setStatus] = useState(blogData?.status || 'draft');

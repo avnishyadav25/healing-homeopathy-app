@@ -107,7 +107,7 @@ const HeroSection = () => {
             <Box
               component="img"
               src={heroImage}
-              alt="Healing Homeopathy"
+              alt="Healing Homoeopathy"
               sx={{
                 width: '100%',
                 maxHeight: { xs: 200, sm: 400 },

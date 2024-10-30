@@ -21,7 +21,7 @@ const MissionStatementSection = () => {
                   Our Commitment to You
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph>
-                  Our mission at Healing Homoeopathy is to provide safe, effective, and natural healthcare solutions tailored to the unique needs of each individual. We are committed to promoting the holistic principles of homeopathy, focusing on the whole person rather than just symptoms.
+                  Our mission at Healing Homoeopathy is to provide safe, effective, and natural healthcare solutions tailored to the unique needs of each individual. We are committed to promoting the holistic principles of Homoeopathy, focusing on the whole person rather than just symptoms.
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                   We believe in treating the root cause of illness, offering personalized care that addresses the physical, emotional, and mental aspects of health. Our goal is to empower you to achieve optimal well-being through natural, non-invasive treatments that work in harmony with your body’s own healing processes.

@@ -1,4 +1,3 @@
-// /backend/models/Comment.js
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({
@@ -7,6 +6,9 @@ const CommentSchema = new mongoose.Schema({
   phone: { type: String, required: false },
   text: { type: String, required: true },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Blog', required: true },
+  parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null }, // For replies
+  status: { type: String, enum: ['pending', 'approved', 'rejected', 'archived'], default: 'pending' }, // Approval status
+  likes: { type: Number, default: 0 }, // Like count for comments
   createdAt: { type: Date, default: Date.now },
 });
 
