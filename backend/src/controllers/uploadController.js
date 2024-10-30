@@ -1,29 +1,31 @@
-// /backend/controllers/uploadController.js
 const path = require('path');
-const multer = require('multer');
+const fs = require('fs');
 
-// Define storage settings for multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'uploads/'));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
+const uploadFile = (req, res) => {
+  const { folder } = req.body; // Get the folder from the form data
+  const tempFilePath = req.file.path; // Temporary file path
+  const fileName = req.file.filename; // The uploaded file's name
+
+  if (!folder) {
+    return res.status(400).json({ message: 'Folder is required' });
   }
-});
 
-const upload = multer({ storage: storage });
-
-// Controller to handle image upload
-const uploadImage = (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
+  // Define the final destination path
+  console.log('###folder', folder);
+  const finalPath = path.join(__dirname, '../../../web-app/public/assets', folder);
+  if (!fs.existsSync(finalPath)) {
+    fs.mkdirSync(finalPath, { recursive: true });
   }
-  res.status(200).json({ url: `/uploads/${req.file.filename}` });
+  console.log('###finalPath', finalPath);
+  const finalFilePath = path.join(finalPath, fileName);
+  console.log('###finalFilePath', finalFilePath);
+  // Move file from temp path to final path
+  fs.rename(tempFilePath, finalFilePath, (err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error moving file', error: err });
+    }
+    res.status(200).json({ filePath: `/assets/${folder}/${fileName}` });
+  });
 };
 
-module.exports = {
-  upload,
-  uploadImage,
-};
+module.exports = { uploadFile };

@@ -5,10 +5,7 @@ const Service = require('../models/Service');
 const getServices = async (req, res) => {
   try {
     const services = await Service.find();
-    
-   // console.log("#### services", JSON.stringify(services));
     res.status(200).json(services);
-    //res.json(services);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching services', error });
   }
@@ -19,7 +16,6 @@ const getServiceById = async (req, res) => {
   const { id } = req.params;
   try {
     const service = await Service.findById(id);
-    //console.log("#### service", JSON.stringify(service));
     if (!service) {
       return res.status(404).json({ message: 'Service not found' });
     }
@@ -29,18 +25,22 @@ const getServiceById = async (req, res) => {
   }
 };
 
-
 // Create a new service
 const createService = async (req, res) => {
-  const { title, image, description, link, patients, details } = req.body;
+  const { title, shortDescription, description, link, patients, details, duration, cost, status, image } = req.body;
+  
   try {
     const newService = new Service({
       title,
-      image,
+      shortDescription,
       description,
       link,
       patients,
       details,
+      duration,
+      cost,
+      status,
+      image, // Save image URL directly
     });
     const savedService = await newService.save();
     res.status(201).json(savedService);
@@ -52,14 +52,28 @@ const createService = async (req, res) => {
 // Update a service
 const updateService = async (req, res) => {
   const { id } = req.params;
-  const { title, image, description, link, patients, details } = req.body;
+  const { title, shortDescription, description, link, patients, details, duration, cost, status, image } = req.body;
+
   try {
-    const updatedService = await Service.findByIdAndUpdate(
-      id,
-      { title, image, description, link, patients, details },
-      { new: true }
-    );
-    res.json(updatedService);
+    const service = await Service.findById(id);
+    if (!service) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+
+    service.title = title || service.title;
+    service.shortDescription = shortDescription || service.shortDescription;
+    service.description = description || service.description;
+    service.link = link || service.link;
+    service.patients = patients || service.patients;
+    service.details = details || service.details;
+    service.duration = duration || service.duration;
+    service.cost = cost || service.cost;
+    service.status = status || service.status;
+    service.image = image || service.image; // Update image URL if provided
+    service.updatedAt = Date.now();
+
+    await service.save();
+    res.status(200).json({ message: 'Service updated successfully', service });
   } catch (error) {
     res.status(500).json({ message: 'Error updating service', error });
   }
@@ -69,20 +83,22 @@ const updateService = async (req, res) => {
 const deleteService = async (req, res) => {
   const { id } = req.params;
   try {
-    await Service.findByIdAndDelete(id);
-    res.json({ message: 'Service deleted successfully' });
+    const service = await Service.findById(id);
+    if (!service) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+
+    await service.remove();
+    res.status(200).json({ message: 'Service deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting service', error });
   }
 };
 
-
-// Export the controller function(s)
 module.exports = {
-    getServices,
-    getServiceById, // Export the new function
-    createService,
-    updateService,
-    deleteService
-  };
-  
+  getServices,
+  getServiceById,
+  createService,
+  updateService,
+  deleteService,
+};

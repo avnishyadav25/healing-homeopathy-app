@@ -66,7 +66,7 @@ app.use('/company', companyRoutes);
 
 
 // Serve uploaded files statically
-app.use('/', express.static(path.join(__dirname, '../../web-app/public/assets')));
+app.use('/assets', express.static(path.join(__dirname, '../../web-app/public/assets')));
 
 // Google OAuth routes
 app.get('/auth/google',
