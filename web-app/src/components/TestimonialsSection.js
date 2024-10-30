@@ -42,7 +42,7 @@ const testimonials = [
   },
   {
     name: "Chris Lee",
-    feedback: "I was skeptical about homeopathy at first, but the results speak for themselves. Healing Homoeopathy's approach to treating the whole person really works.",
+    feedback: "I was skeptical about Homoeopathy at first, but the results speak for themselves. Healing Homoeopathy's approach to treating the whole person really works.",
     image: customerImage5,
   },
   {
@@ -75,7 +75,7 @@ const TestimonialsSection = () => {
             What Our Patients Say
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            See how our patients have benefited from our holistic approach to homeopathy. Their stories reflect the positive impact of personalized care and natural remedies.
+            See how our patients have benefited from our holistic approach to Homoeopathy. Their stories reflect the positive impact of personalized care and natural remedies.
           </Typography>
         </Box>
       </Fade>

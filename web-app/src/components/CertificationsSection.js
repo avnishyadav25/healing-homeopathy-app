@@ -16,9 +16,9 @@ const certifications = [
     details: "Recognized as a trusted practitioner by the Homeopathic Medical Association.",
   },
   {
-    name: "Awarded Best Homeopathy Practice 2024",
+    name: "Awarded Best Homoeopathy Practice 2024",
     image: certificationImage2,
-    details: "Awarded for outstanding contributions to the field of homeopathy.",
+    details: "Awarded for outstanding contributions to the field of Homoeopathy.",
   },
   {
     name: "Licensed Practitioner by the National Council for Homeopathic Medicine",
@@ -31,22 +31,22 @@ const certifications = [
     details: "Accredited for professional excellence and commitment to patient care.",
   },
   {
-    name: "Recipient of the Excellence in Homeopathy Award 2023",
+    name: "Recipient of the Excellence in Homoeopathy Award 2023",
     image: certificationImage5,
-    details: "Honored with the Excellence in Homeopathy Award for innovative treatments.",
+    details: "Honored with the Excellence in Homoeopathy Award for innovative treatments.",
   },
   {
-    name: "Affiliated with the Global Homeopathy Network",
+    name: "Affiliated with the Global Homoeopathy Network",
     image: certificationImage6,
-    details: "Connected with a global network of homeopathy professionals.",
+    details: "Connected with a global network of Homoeopathy professionals.",
   },
   {
     name: "Certified in Advanced Homeopathic Therapeutics",
     image: certificationImage7,
-    details: "Specialized certification in advanced therapeutic techniques in homeopathy.",
+    details: "Specialized certification in advanced therapeutic techniques in Homoeopathy.",
   },
   {
-    name: "Member of the World Federation of Homeopathy",
+    name: "Member of the World Federation of Homoeopathy",
     image: certificationImage8,
     details: "A proud member of the World Federation, promoting global homeopathic practices.",
   },

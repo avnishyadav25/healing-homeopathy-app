@@ -42,7 +42,7 @@ const LoginPage = () => {
                 Why Log In?
               </Typography>
               <Typography variant="body1" sx={{ mb: 2 }}>
-                By logging into Healing Homeopathy, you gain access to:
+                By logging into Healing Homoeopathy, you gain access to:
               </Typography>
               <ul>
                 <Typography component="li" variant="body2" gutterBottom>

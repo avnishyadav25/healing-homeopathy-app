@@ -18,6 +18,8 @@ const newsletterUserRoutes = require('./routes/newsletterUserRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const companyRoutes = require('./routes/companyRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -60,6 +62,8 @@ app.use('/comments', commentRoutes);
 app.use('/newsletter-users', newsletterUserRoutes);
 app.use('/services', serviceRoutes);
 app.use('/upload', uploadRoutes);
+app.use('/company', companyRoutes);
+
 
 // Serve uploaded files statically
 app.use('/', express.static(path.join(__dirname, '../../web-app/public/assets')));

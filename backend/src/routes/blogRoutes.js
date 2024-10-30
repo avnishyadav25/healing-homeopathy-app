@@ -65,6 +65,8 @@ const ensureDirExists = (req, res, next) => {
   next();
 };
 
+//console.log('#### upload', upload);
+
 // Blog routes
 router.get('/', getBlogs); // Get blogs with optional status and pagination
 router.get('/all', getAllBlogs); // Get all blogs

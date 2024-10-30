@@ -17,7 +17,7 @@ const NewsletterSignupSection = () => {
             </Grow>
             <Fade in timeout={1500}>
               <Typography variant="body1" sx={{ mb: 4 }}>
-                Subscribe to our newsletter for the latest in homeopathy, wellness tips, and exclusive offers.
+                Subscribe to our newsletter for the latest in Homoeopathy, wellness tips, and exclusive offers.
               </Typography>
             </Fade>
             

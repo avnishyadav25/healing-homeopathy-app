@@ -1,7 +1,7 @@
 // /web-app/src/components/Comments.js
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, TextField, Avatar } from '@mui/material';
-import commentService from '../../services/commentService';
+import {fetchCommentsByPostId, createComment} from '../../services/commentService';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Comments = ({ postId }) => {
@@ -16,7 +16,7 @@ const Comments = ({ postId }) => {
     // Fetch comments for the post
     const fetchComments = async () => {
       try {
-        const commentsData = await commentService.fetchCommentsByPostId(postId);
+        const commentsData = await fetchCommentsByPostId(postId);
         setComments(commentsData);
       } catch (error) {
         console.error('Error fetching comments:', error);
@@ -41,7 +41,7 @@ const Comments = ({ postId }) => {
     const commentData = { name, email, phone, text, postId };
 
     try {
-      const newComment = await commentService.createComment(commentData);
+      const newComment = await createComment(commentData);
       setComments([...comments, newComment]); // Append new comment to list
       setText(''); // Clear comment text after submission
     } catch (error) {

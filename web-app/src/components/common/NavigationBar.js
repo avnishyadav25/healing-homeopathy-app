@@ -120,7 +120,7 @@ function NavigationBar({ mode, toggleColorMode }) {
                   sx={{ cursor: 'pointer', color: navTextColor }}
                   onClick={handleLogoClick}
                 >
-                  Healing Homeopathy
+                  Healing Homoeopathy
                 </Typography>
               )}
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

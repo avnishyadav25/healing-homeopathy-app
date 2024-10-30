@@ -1,1 +1,1 @@
-# healing-homeopathy-app
+# healing-Homoeopathy-app

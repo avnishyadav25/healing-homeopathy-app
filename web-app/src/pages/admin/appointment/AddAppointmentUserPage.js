@@ -1,14 +1,12 @@
 // /src/pages/admin/appointment/AddAppointmentUserPage.js
 import React from 'react';
 import AdminPageTemplate from '../../../components/admin/AdminPageTemplate';
-import AddAppointmentUser from '../../../components/admin/appointment/AddAppointmentUser'; // Create AddAppointmentUser component
+import AddAppointmentUser from '../../../components/admin/appointment/AddAppointmentUser';
 
-const AddAppointmentUserPage = () => {
-  return (
-    <AdminPageTemplate>
-      <AddAppointmentUser />
-    </AdminPageTemplate>
-  );
-};
+const AddAppointmentUserPage = () => (
+  <AdminPageTemplate>
+    <AddAppointmentUser />
+  </AdminPageTemplate>
+);
 
 export default AddAppointmentUserPage;

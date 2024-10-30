@@ -25,6 +25,19 @@ import CommentsPage from './pages/admin/blog/CommentsPage';
 import MediaPage from './pages/admin/blog/MediaPage';
 import BlogPreviewPage from './pages/admin/blog/BlogPreviewPage';
 
+import CompanyPage from './pages/admin/CompanyPage';
+
+import AppointmentListPage from './pages/admin/appointment/AppointmentListPage';
+import AddAppointmentUserPage from './pages/admin/appointment/AddAppointmentUserPage';
+import EditAppointmentUserPage from './pages/admin/appointment/EditAppointmentUserPage';
+import ViewAppointmentUserPage from './pages/admin/appointment/ViewAppointmentUserPage'
+
+import AllCommentListPage from './pages/admin/comment/AllCommentListPage';
+import CommentListPage from './pages/admin/comment/CommentListPage';
+import AddCommentPage from './pages/admin/comment/AddCommentPage';
+import EditCommentPage from './pages/admin/comment/EditCommentPage';
+import ViewCommentPage from './pages/admin/comment/ViewCommentPage';
+
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
@@ -77,6 +90,19 @@ function App() {
                 <Route path="/admin/blogs/comments" element={<CommentsPage />} />
                 <Route path="/admin/blogs/media" element={<MediaPage />} />
                 <Route path="/admin/blog/preview" element={<BlogPreviewPage />} />
+
+                <Route path="/admin/appointments" element={<AppointmentListPage />} />
+                <Route path="/admin/appointments/create" element={<AddAppointmentUserPage />} />
+                <Route path="/admin/appointments/view/:id" element={<ViewAppointmentUserPage />} />
+                <Route path="/admin/appointments/edit/:id" element={<EditAppointmentUserPage />} />
+
+                <Route path="/admin/comments" element={<AllCommentListPage />} />
+                <Route path="/admin/comments/post/:postId" element={<CommentListPage />} />
+                <Route path="/admin/comments/add" element={<AddCommentPage />} />
+                <Route path="/admin/comments/edit/:id" element={<EditCommentPage />} />
+                <Route path="/admin/comments/view/:id" element={<ViewCommentPage />} />
+
+                <Route path="/admin/company" element={<CompanyPage />} />
 
              {/* </Route>*/}
             </Route>

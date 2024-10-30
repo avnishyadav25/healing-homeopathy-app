@@ -102,10 +102,10 @@ const createOrUpdateBlog = async (req, res) => {
     const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
     const { id } = req.params;
     const blogUrl = permalink || title.toLowerCase().replace(/ /g, '-');
-
+    console.log('#### blog', blog);
     let blog = id ? await Blog.findById(id) : null;
     let featuredImage = blog ? blog.featuredImage : null;
-
+    console.log('#### req.file', req.file);
     if (req.file) {
       if (featuredImage) {
         const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);

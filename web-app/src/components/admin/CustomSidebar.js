@@ -1,12 +1,10 @@
 // /web-app/src/components/admin/CustomSidebar.js
 
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   DashboardMenuItem,
   MenuItemLink,
   useSidebarState,
-  useTranslate,
   Menu,
 } from 'react-admin';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +17,7 @@ import {
   Forum as ForumIcon,
   LocalShipping as LocalShippingIcon,
   AccountCircle as AccountCircleIcon,
+  Business as BusinessIcon,
 } from '@mui/icons-material';
 
 const CustomSidebar = (props) => {
@@ -137,6 +136,12 @@ const CustomSidebar = (props) => {
           />
         </List>
       </Collapse>
+      <MenuItemLink
+        to="/admin/company"
+        primaryText="Company"
+        leftIcon={<BusinessIcon />}
+        onClick={() => navigate('/admin/company')}
+      />
     </Menu>
   );
 };
