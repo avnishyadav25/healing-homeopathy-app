@@ -1,9 +1,7 @@
 // /src/components/admin/SideNavBar.js
 import React, { useState } from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, IconButton, Divider } from '@mui/material';
-import { ExpandLess, ExpandMore, Menu } from '@mui/icons-material';
-import { Home, Dashboard, Edit, Forum, LocalShipping, AccountCircle, AddBox, Business, CalendarToday, Comment } from '@mui/icons-material';
-
+import { ExpandLess, ExpandMore, Menu, Home, Dashboard, Edit, Forum, LocalShipping, AccountCircle, AddBox, Business, CalendarToday, Comment, Build } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -49,19 +47,16 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
           {!collapsed && <ListItemText primary="Home" />}
         </ListItem>
 
-        
-
-
-         {/* Blog Link */}
-       <ListItem button component={Link} to="/admin/blogs">
+        {/* Blog Link */}
+        <ListItem button component={Link} to="/admin/blogs">
           <ListItemIcon>
-          <Edit />
+            <Edit />
           </ListItemIcon>
           {!collapsed && <ListItemText primary="Blogs" />}
         </ListItem>
 
-       {/* Appointments Link */}
-       <ListItem button component={Link} to="/admin/appointments">
+        {/* Appointments Link */}
+        <ListItem button component={Link} to="/admin/appointments">
           <ListItemIcon>
             <CalendarToday />
           </ListItemIcon>
@@ -76,24 +71,31 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
           {!collapsed && <ListItemText primary="Comments" />}
         </ListItem>
 
-         {/* Dashboard Link */}
-       <ListItem button component={Link} to="/admin/">
+        {/* Forum Link */}
+        <ListItem button component={Link} to="/admin/forum">
           <ListItemIcon>
-          <Forum />
+            <Forum />
           </ListItemIcon>
           {!collapsed && <ListItemText primary="Forum" />}
         </ListItem>
 
-         {/* Dashboard Link */}
-       <ListItem button component={Link} to="/admin/">
+        {/* Dashboard Link */}
+        <ListItem button component={Link} to="/admin/dashboard">
           <ListItemIcon>
-          <Dashboard />
+            <Dashboard />
           </ListItemIcon>
           {!collapsed && <ListItemText primary="Dashboard" />}
         </ListItem>
 
-       
+        {/* Services Link */}
+        <ListItem button component={Link} to="/admin/services">
+          <ListItemIcon>
+            <Build />
+          </ListItemIcon>
+          {!collapsed && <ListItemText primary="Services" />}
+        </ListItem>
 
+        {/* Order Management */}
         <ListItem button onClick={() => handleClick('order')}>
           <ListItemIcon>
             <LocalShipping />
@@ -112,6 +114,7 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
           </List>
         </Collapse>
 
+        {/* Account Settings */}
         <ListItem button onClick={() => handleClick('account')}>
           <ListItemIcon>
             <AccountCircle />
@@ -133,6 +136,7 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
           </List>
         </Collapse>
 
+        {/* Admin Tools */}
         <ListItem button onClick={() => handleClick('adminTools')}>
           <ListItemIcon>
             <AddBox />

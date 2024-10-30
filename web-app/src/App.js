@@ -38,6 +38,11 @@ import AddCommentPage from './pages/admin/comment/AddCommentPage';
 import EditCommentPage from './pages/admin/comment/EditCommentPage';
 import ViewCommentPage from './pages/admin/comment/ViewCommentPage';
 
+import ServiceFormListPage from './pages/admin/service/ServiceFormListPage';
+import AddServicePage from './pages/admin/service/AddServicePage';
+import EditServicePage from './pages/admin/service/EditServicePage';
+import ViewServicePage from './pages/admin/service/ViewServicePage';
+
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
@@ -101,6 +106,12 @@ function App() {
                 <Route path="/admin/comments/add" element={<AddCommentPage />} />
                 <Route path="/admin/comments/edit/:id" element={<EditCommentPage />} />
                 <Route path="/admin/comments/view/:id" element={<ViewCommentPage />} />
+
+                <Route path="/admin/services" element={<ServiceFormListPage />} />
+                <Route path="/admin/services/add" element={<AddServicePage />} />
+                <Route path="/admin/services/edit/:id" element={<EditServicePage />} />
+                <Route path="/admin/services/view/:id" element={<ViewServicePage />} />
+      
 
                 <Route path="/admin/company" element={<CompanyPage />} />
 

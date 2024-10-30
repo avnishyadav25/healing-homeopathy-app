@@ -189,6 +189,7 @@ const FeatureSection = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get(apiUrl+'/services');
+        console.log('### services = ',response.data);
         setServices(response.data);
       } catch (error) {
         console.error('Error fetching services', error);
@@ -282,6 +283,7 @@ const FeatureSection = () => {
               <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
                 {services[selectedServiceIndex].description}
               </Typography>
+              
               <List>
                 {services[selectedServiceIndex].details.map((detail, index) => (
                   <ListItem key={index}>
