@@ -20,6 +20,8 @@ const LoginForm = () => {
 
     try {
       const { token, role } = await authService.login(email, password);
+      console.log('#### token ', token);
+      console.log('#### role ', role);
 
       // Store token and role based on "Remember me" option
       if (rememberMe) { 

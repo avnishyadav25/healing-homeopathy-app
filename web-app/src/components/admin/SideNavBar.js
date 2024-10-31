@@ -1,7 +1,7 @@
 // /src/components/admin/SideNavBar.js
 import React, { useState } from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, IconButton, Divider } from '@mui/material';
-import { ExpandLess, ExpandMore, Menu, Home, Dashboard, Edit, Forum, LocalShipping, AccountCircle, AddBox, Business, CalendarToday, Comment, Build } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, Menu, Home, Dashboard, Edit, Forum, LocalShipping, AccountCircle, AddBox, Business, CalendarToday, Comment, Build, People, Label, Category  } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -45,6 +45,13 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
             <Home />
           </ListItemIcon>
           {!collapsed && <ListItemText primary="Home" />}
+        </ListItem>
+        {/* User Management Link */}
+        <ListItem button component={Link} to="/admin/users">
+          <ListItemIcon>
+            <People />
+          </ListItemIcon>
+          {!collapsed && <ListItemText primary="User Management" />}
         </ListItem>
 
         {/* Blog Link */}
@@ -93,6 +100,20 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
             <Build />
           </ListItemIcon>
           {!collapsed && <ListItemText primary="Services" />}
+        </ListItem>
+
+        <ListItem button component={Link} to="/admin/tags">
+          <ListItemIcon>
+            <Label />
+          </ListItemIcon>
+          {!collapsed && <ListItemText primary="Tags" />}
+        </ListItem>
+
+        <ListItem button component={Link} to="/admin/categories">
+          <ListItemIcon>
+            <Category />
+          </ListItemIcon>
+          {!collapsed && <ListItemText primary="Categories" />}
         </ListItem>
 
         {/* Order Management */}

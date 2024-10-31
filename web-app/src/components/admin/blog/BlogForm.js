@@ -15,7 +15,7 @@ import JoditEditor from 'jodit-react';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 
-const apiUrl = process.env.REACT_APP_API_URL + '/';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
   const [title, setTitle] = useState(blogData?.title || '');

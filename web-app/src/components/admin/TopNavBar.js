@@ -10,11 +10,13 @@ import {
   MenuItem,
   Box,
   Badge,
+  Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
 
 const TopNavBar = ({ onMenuClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,13 +41,9 @@ const TopNavBar = ({ onMenuClick }) => {
     }
   }, []);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleMenu = (event) => setAnchorEl(event.currentTarget);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -54,21 +52,13 @@ const TopNavBar = ({ onMenuClick }) => {
     navigate('/login');
   };
 
-  const handleNotificationsClick = (event) => {
-    setNotificationsEl(event.currentTarget);
-  };
+  const handleNotificationsClick = (event) => setNotificationsEl(event.currentTarget);
 
-  const handleNotificationsClose = () => {
-    setNotificationsEl(null);
-  };
+  const handleNotificationsClose = () => setNotificationsEl(null);
 
-  const handleAddClick = (event) => {
-    setAddEl(event.currentTarget);
-  };
+  const handleAddClick = (event) => setAddEl(event.currentTarget);
 
-  const handleAddClose = () => {
-    setAddEl(null);
-  };
+  const handleAddClose = () => setAddEl(null);
 
   return (
     <AppBar position="fixed">
@@ -79,6 +69,16 @@ const TopNavBar = ({ onMenuClick }) => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Admin Dashboard
         </Typography>
+
+        {/* Go to Website Button */}
+        <Button
+          color="inherit"
+          startIcon={<HomeIcon />}
+          href="/" // Link to the website's homepage
+          sx={{ mr: 2 }}
+        >
+          Go to Website
+        </Button>
 
         {/* Add Icon */}
         <IconButton
