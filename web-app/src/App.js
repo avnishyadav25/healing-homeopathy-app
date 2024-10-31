@@ -43,6 +43,21 @@ import AddServicePage from './pages/admin/service/AddServicePage';
 import EditServicePage from './pages/admin/service/EditServicePage';
 import ViewServicePage from './pages/admin/service/ViewServicePage';
 
+// Import User management pages
+import UserFormListPage from './pages/admin/user/UserFormListPage';
+import AddUserPage from './pages/admin/user/AddUserPage';
+import EditUserPage from './pages/admin/user/EditUserPage';
+import ViewUserPage from './pages/admin/user/ViewUserPage';
+
+import TagListPage from './pages/admin/tags/TagListPage';
+import AddTagFormPage from './pages/admin/tags/AddTagFormPage';
+import EditTagFormPage from './pages/admin/tags/EditTagFormPage';
+import ViewTagFormPage from './pages/admin/tags/ViewTagFormPage';
+import CategoryListPage from './pages/admin/categories/CategoryListPage';
+import AddCategoryFormPage from './pages/admin/categories/AddCategoryFormPage';
+import EditCategoryFormPage from './pages/admin/categories/EditCategoryFormPage';
+import ViewCategoryFormPage from './pages/admin/categories/ViewCategoryFormPage';
+
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
@@ -111,6 +126,21 @@ function App() {
                 <Route path="/admin/services/add" element={<AddServicePage />} />
                 <Route path="/admin/services/edit/:id" element={<EditServicePage />} />
                 <Route path="/admin/services/view/:id" element={<ViewServicePage />} />
+
+                {/* User Management Routes */}
+              <Route path="/admin/users" element={<UserFormListPage />} />
+              <Route path="/admin/users/add" element={<AddUserPage />} />
+              <Route path="/admin/users/edit/:id" element={<EditUserPage />} />
+              <Route path="/admin/users/view/:id" element={<ViewUserPage />} />
+
+              <Route path="/admin/tags" element={<TagListPage />} />
+              <Route path="/admin/tags/add" element={<AddTagFormPage />} />
+              <Route path="/admin/tags/edit/:id" element={<EditTagFormPage />} />
+              <Route path="/admin/tags/view/:id" element={<ViewTagFormPage />} />
+              <Route path="/admin/categories" element={<CategoryListPage />} />
+              <Route path="/admin/categories/add" element={<AddCategoryFormPage />} />
+              <Route path="/admin/categories/edit/:id" element={<EditCategoryFormPage />} />
+              <Route path="/admin/categories/view/:id" element={<ViewCategoryFormPage />} />
       
 
                 <Route path="/admin/company" element={<CompanyPage />} />

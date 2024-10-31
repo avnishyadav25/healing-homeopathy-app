@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import blogService from '../../../services/blogService';
 
 
-const apiUrl = process.env.REACT_APP_API_URL+'/';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const AllBlogs = () => {
   const [tabValue, setTabValue] = useState(0);

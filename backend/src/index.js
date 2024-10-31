@@ -19,6 +19,8 @@ const newsletterRoutes = require('./routes/newsletterRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const companyRoutes = require('./routes/companyRoutes');
+const tagRoutes = require('./routes/tagRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 
 const app = express();
@@ -63,6 +65,8 @@ app.use('/newsletter-users', newsletterUserRoutes);
 app.use('/services', serviceRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/company', companyRoutes);
+app.use('/tags', tagRoutes);
+app.use('/categories', categoryRoutes);
 
 
 // Serve uploaded files statically
