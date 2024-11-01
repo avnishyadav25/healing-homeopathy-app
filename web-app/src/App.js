@@ -5,17 +5,17 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
-import HomePage from './pages/public/HomePage';
-import AboutPage from './pages/public/AboutPage';
-import ServicesPage from './pages/public/ServicesPage';
-import BookAppointmentPage from './pages/public/BookAppointmentPage';
-import BlogPage from './pages/public/BlogPage';
-import BlogPostPage from './pages/public/BlogPostPage';
-import ContactPage from './pages/public/ContactPage';
-import OrderMedicinePage from './pages/public/OrderMedicinePage';
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-import RoleSelectionPage from './pages/auth/RoleSelectionPage';
+import HomePage from './pages/public/home/HomePage';
+import AboutPage from './pages/public/about/AboutPage';
+import ServicesPage from './pages/public/services/ServicesPage';
+import BookAppointmentPage from './pages/public/appointment/BookAppointmentPage';
+import BlogPage from './pages/public/blog/BlogPage';
+import BlogPostPage from './pages/public/blog/BlogPostPage';
+import ContactPage from './pages/public/contact/ContactPage';
+import OrderMedicinePage from './pages/public/services/OrderMedicinePage';
+import LoginPage from './pages/public/auth/LoginPage';
+import RegisterPage from './pages/public/auth/RegisterPage';
+import RoleSelectionPage from './pages/public/auth/RoleSelectionPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 
 import AllBlogsPage from './pages/admin/blog/AllBlogsPage';
@@ -59,7 +59,7 @@ import EditCategoryFormPage from './pages/admin/categories/EditCategoryFormPage'
 import ViewCategoryFormPage from './pages/admin/categories/ViewCategoryFormPage';
 
 
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/public/auth/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });

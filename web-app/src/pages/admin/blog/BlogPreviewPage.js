@@ -1,7 +1,9 @@
 // src/pages/BlogPreviewPage.js
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Box } from '@mui/material';
-import BlogPostDetail from '../../../components/BlogPostDetail';
+import BlogPostDetail from '../../../components/public/blog/BlogPostDetail';
+import Template from '../../../components/common/Template';
+
 
 const BlogPreviewPage = () => {
   const [blogData, setBlogData] = useState(null);
@@ -16,9 +18,9 @@ const BlogPreviewPage = () => {
   if (!blogData) return <Typography>Loading preview...</Typography>;
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Template>
       <BlogPostDetail post={blogData} />
-    </Container>
+   </Template>
   );
 };
 

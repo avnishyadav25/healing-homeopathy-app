@@ -13,7 +13,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import IconButton from '@mui/material/IconButton';
 import logo from '../../assets/logo.svg'; // Ensure this path is correct
 import NewsletterForm from './NewsletterForm'; // Import the NewsletterForm
-import SectionDivider from '../SectionDivider'; // Import the NewsletterForm
+import SectionDivider from '../public/common/SectionDivider'; // Import the NewsletterForm
 
 const logoStyle = {
   width: '157px',

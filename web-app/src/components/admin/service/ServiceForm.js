@@ -56,7 +56,7 @@ const ServiceForm = ({ initialData = {}, onSubmit, isEditMode = false }) => {
       } catch (error) {
         setSnackbar({ open: true, message: 'Error uploading image. Please try again.', severity: 'error' });
       }
-    }
+    } 
   };
 
   const handleDetailChange = (index, value) => {
