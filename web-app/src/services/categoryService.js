@@ -20,6 +20,21 @@ export const getAllCategories = async (page = 1, limit = 10) => {
   }
 };
 
+// Fetch all categories
+export const fetchCategories = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/categories`);
+    return response.data.categories;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    throw new Error('Error fetching categories');
+  }
+};
+
+export default {
+  fetchCategories,
+};
+
 // Get a single category by ID
 export const getCategoryById = async (id) => {
   try {

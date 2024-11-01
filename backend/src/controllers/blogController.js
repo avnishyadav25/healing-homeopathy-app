@@ -1,41 +1,19 @@
-const Blog = require('../models/Blog'); // Ensure the correct path to your Blog model
-const fs = require('fs');
-const path = require('path');
+const Blog = require('../models/Blog');
 const mongoose = require('mongoose');
 
-// Helper function to save featured images in `web-app/public/assets/blog/[blog-url]/[blog-name].jpg`
-const saveImage = (file, blogUrl) => {
-  const dirPath = path.join(__dirname, '../../../web-app/public/assets/blog', blogUrl);
-  const imagePath = path.join(dirPath, `${blogUrl}${path.extname(file.originalname)}`);
-
-  // Create directory if it doesn't exist
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-
-  // Check if an image with the same name exists and remove it
-  if (fs.existsSync(imagePath)) {
-    fs.unlinkSync(imagePath);
-  }
-
-  // Move the new image file
-  fs.renameSync(file.path, imagePath);
-
-  return `/blog/${blogUrl}/${blogUrl}${path.extname(file.originalname)}`;
-};
-
+// Helper function to format permalink
+const formatPermalink = (title) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 // Create a new blog
 const createBlog = async (req, res) => {
   try {
-    const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
-    const blogUrl = permalink || title.toLowerCase().replace(/ /g, '-');
-    const featuredImage = req.file ? saveImage(req.file, blogUrl) : null;
+    const { title, content, tags, category, permalink, author, publishTime, status, featuredImage } = req.body;
+    const blogUrl = permalink || formatPermalink(title);
 
     const newBlog = new Blog({
       title,
       content,
-      tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+      tags: tags ? tags : [],
       category,
       permalink: blogUrl,
       author,
@@ -47,122 +25,60 @@ const createBlog = async (req, res) => {
     await newBlog.save();
     res.status(201).json({ message: 'Blog created successfully', blog: newBlog });
   } catch (error) {
+    console.error('Error creating blog:', error);
     res.status(500).json({ message: 'Error creating blog', error });
   }
 };
 
-//Update Blog
+// Update an existing blog
 const updateBlog = async (req, res) => {
   try {
-    const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
     const { id } = req.params;
-    console.log('#### hello 1', req.body);
+    console.log('#### id =', id);
+    const { title, content, tags, category, permalink, author, publishTime, status, featuredImage } = req.body;
+    console.log('#### req.body =', req.body);
     const blog = await Blog.findById(id);
+    console.log('#### req.blog =', blog);
     if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
     }
 
-    const blogUrl = permalink || blog.permalink || title.toLowerCase().replace(/ /g, '-');
-    let featuredImage = blog.featuredImage;
+    const blogUrl = permalink || formatPermalink(title);
 
-    if (req.file) {
-      // Remove old image if it exists
-      if (featuredImage) {
-        const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-      // Save new image
-      featuredImage = saveImage(req.file, blogUrl);
-    }
-
+    // Update blog fields
     blog.title = title || blog.title;
     blog.content = content || blog.content;
-    blog.tags = tags ? tags.split(',').map(tag => tag.trim()) : blog.tags;
+    blog.tags = tags ? tags : blog.tags;
     blog.category = category || blog.category;
     blog.permalink = blogUrl;
     blog.author = author || blog.author;
     blog.publishTime = publishTime || blog.publishTime;
     blog.status = status || blog.status;
-    blog.featuredImage = featuredImage;
+    blog.featuredImage = featuredImage || blog.featuredImage;
     blog.updatedAt = Date.now();
 
     await blog.save();
     res.status(200).json({ message: 'Blog updated successfully', blog });
   } catch (error) {
+    console.log('#### error =', error);
+    console.error('Error updating blog:', error);
     res.status(500).json({ message: 'Error updating blog', error });
   }
 };
 
-
-
-const createOrUpdateBlog = async (req, res) => {
-  try {
-    const { title, content, tags, category, permalink, author, publishTime, status } = req.body;
-    const { id } = req.params;
-    const blogUrl = permalink || title.toLowerCase().replace(/ /g, '-');
-    console.log('#### blog', blog);
-    let blog = id ? await Blog.findById(id) : null;
-    let featuredImage = blog ? blog.featuredImage : null;
-    console.log('#### req.file', req.file);
-    if (req.file) {
-      if (featuredImage) {
-        const oldImagePath = path.join(__dirname, '../../../web-app/public', featuredImage);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-      featuredImage = saveImage(req.file, blogUrl);
-    }
-
-    if (blog) {
-      // Update existing blog
-      blog.title = title || blog.title;
-      blog.content = content || blog.content;
-      blog.tags = tags ? tags.split(',').map(tag => tag.trim()) : blog.tags;
-      blog.category = category || blog.category;
-      blog.permalink = blogUrl;
-      blog.author = author || blog.author;
-      blog.publishTime = publishTime || blog.publishTime;
-      blog.status = status || blog.status;
-      blog.featuredImage = featuredImage;
-      blog.updatedAt = Date.now();
-
-      await blog.save();
-      res.status(200).json({ message: 'Blog updated successfully', blog });
-    } else {
-      // Create new blog
-      blog = new Blog({
-        title,
-        content,
-        tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-        category,
-        permalink: blogUrl,
-        author,
-        publishTime,
-        featuredImage,
-        status
-      });
-
-      await blog.save();
-      res.status(201).json({ message: 'Blog created successfully', blog });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error processing blog', error });
-  }
-};
-
-
-// Get all blogs with pagination and optional status
+// Get all blogs with optional status, category, and pagination
 const getBlogs = async (req, res) => {
   try {
-    const { status, page = 1, limit = 10 } = req.query;
-    const query = status ? { status } : {}; // Query by status if provided
+    const { status, page = 1, limit = 10, category } = req.query;
+    const query = {};
+
+    if (status) query.status = status;
+    if (category) query.category = category;
 
     const blogs = await Blog.find(query)
       .skip((page - 1) * limit)
       .limit(Number(limit))
+      .sort({ createdAt: -1 })
       .exec();
 
     const totalBlogs = await Blog.countDocuments(query);
@@ -178,67 +94,23 @@ const getBlogs = async (req, res) => {
   }
 };
 
-// Get all blogs without pagination
-const getAllBlogs = async (req, res) => {
-  try {
-    const blogs = await Blog.find();
-    res.status(200).json(blogs);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching blogs', error });
-  }
-};
-
-// Get a single blog by ID
-const getBlogById = async (req, res) => {
-  try {
-    const blog = await Blog.findById(req.params.id);
-    if (!blog) {
-      return res.status(404).json({ message: 'Blog not found' });
-    }
-    res.status(200).json(blog);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching blog', error });
-  }
-};
-
+// Get a single blog by ID or permalink
 const getBlogByIdOrPermalink = async (req, res) => {
   const { identifier } = req.params;
-  
   try {
-    let blog;
-    // Check if the identifier is a valid ObjectId
-    if (mongoose.Types.ObjectId.isValid(identifier)) {
-      blog = await Blog.findById(identifier);
-    }
-    
-    // If not found by ObjectId, try finding by permalink
-    if (!blog) {
-      blog = await Blog.findOne({ permalink: identifier });
-    }
+    let blog = mongoose.Types.ObjectId.isValid(identifier)
+      ? await Blog.findById(identifier)
+      : await Blog.findOne({ permalink: identifier });
 
     if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
     }
-    
+
     res.status(200).json(blog);
   } catch (error) {
-    console.log('### error getBlogByIdOrPermalink ', error);
     res.status(500).json({ message: 'Error fetching blog', error });
   }
 };
-
-
-// Get blogs by author
-const getBlogsByAuthor = async (req, res) => {
-  try {
-    const blogs = await Blog.find({ author: req.params.author });
-    res.status(200).json(blogs);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching blogs by author', error });
-  }
-};
-
-
 
 // Delete a blog
 const deleteBlog = async (req, res) => {
@@ -246,13 +118,6 @@ const deleteBlog = async (req, res) => {
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
-    }
-
-    if (blog.featuredImage) {
-      const imagePath = path.join(__dirname, '../../../web-app/public', blog.featuredImage);
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      }
     }
 
     await blog.remove();
@@ -265,11 +130,7 @@ const deleteBlog = async (req, res) => {
 // Archive a blog
 const archiveBlog = async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { archived: true },
-      { new: true }
-    );
+    const blog = await Blog.findByIdAndUpdate(req.params.id, { archived: true }, { new: true });
     if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
     }
@@ -279,17 +140,11 @@ const archiveBlog = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   createBlog,
-  getBlogs,
-  getAllBlogs,
-  getBlogById,
-  getBlogByIdOrPermalink, // Updated export
-  getBlogsByAuthor,
   updateBlog,
+  getBlogs,
+  getBlogByIdOrPermalink,
   deleteBlog,
   archiveBlog,
-  createOrUpdateBlog,
 };

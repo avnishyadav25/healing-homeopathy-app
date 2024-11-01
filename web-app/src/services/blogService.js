@@ -5,13 +5,14 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const fetchLatestBlogs = async (limit = 4) => {
   try {
-    const response = await axios.get(`${apiUrl}/blogs?limit=${limit}`);
+    const response = await axios.get(`${apiUrl}/blogs`, { params: { limit } });
     return response.data.blogs;
   } catch (error) {
     console.error('Error fetching latest blogs:', error);
     throw new Error('Error fetching latest blogs');
   }
 };
+
 
 const fetchBlogs = async ({ status = '', page = 1, limit = 10 }) => {
   try {
@@ -20,6 +21,18 @@ const fetchBlogs = async ({ status = '', page = 1, limit = 10 }) => {
   } catch (error) {
     console.error('Error fetching blogs:', error);
     throw new Error('Error fetching blogs');
+  }
+};
+
+
+// Fetch blogs by category
+ const fetchBlogsByCategory = async (category, page = 1, limit = 10) => {
+  try {
+    const response = await axios.get(`${apiUrl}/blogs`, { params: { category, page, limit } });
+    return response.data.blogs;
+  } catch (error) {
+    console.error(`Error fetching blogs for category ${category}:`, error);
+    throw new Error('Error fetching blogs by category');
   }
 };
 
@@ -33,20 +46,28 @@ const fetchBlogByIdOrPermalink = async (identifier) => {
   }
 };
 
-const createOrUpdateBlog = async (blogData, id = null) => {
+const createBlog = async (blogData) => {
   try {
-    const url = id ? `${apiUrl}/blogs/create-or-update/${id}` : `${apiUrl}/blogs/create`;
     const formData = new FormData();
-    Object.keys(blogData).forEach((key) => formData.append(key, blogData[key]));
-    const response = await axios.post(url, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    console.log('#### response.data = ', response.data);
+
+    const response = await axios.post(`${apiUrl}/blogs/create`, blogData);
     return response.data;
   } catch (error) {
-    console.log('#### error = ', error);
-    console.error(`Error ${id ? 'updating' : 'creating'} blog:`, error);
-    throw new Error(`Error ${id ? 'updating' : 'creating'} blog`); 
+    console.error('Error creating blog:', error);
+    throw new Error('Error creating blog');
+  }
+};
+
+const updateBlog = async (id, blogData) => {
+  try {
+    console.log('#### id updateBlog = ', id);
+    const formData = new FormData();
+    console.log('#### formData = ', JSON.stringify(blogData));
+    const response = await axios.put(`${apiUrl}/blogs/update/${id}`, blogData);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating blog with ID ${id}:`, error);
+    throw new Error('Error updating blog');
   }
 };
 
@@ -73,8 +94,10 @@ const archiveBlog = async (id) => {
 export default {
   fetchLatestBlogs,
   fetchBlogs,
+  fetchBlogsByCategory,
   fetchBlogByIdOrPermalink,
-  createOrUpdateBlog,
+  createBlog,
+  updateBlog,
   deleteBlog,
   archiveBlog,
 };

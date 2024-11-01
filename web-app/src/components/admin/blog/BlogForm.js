@@ -9,38 +9,78 @@ import {
   CardMedia,
   Button,
   MenuItem,
+  Snackbar,
+  Alert,
 } from '@mui/material';
-import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import JoditEditor from 'jodit-react';
 import Datetime from 'react-datetime';
+import uploadFile from '../../../services/uploadService'; // Import the upload service
 import 'react-datetime/css/react-datetime.css';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
+const BlogForm = ({ blogData = {}, onSubmit, isEditMode = false }) => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState(blogData?.title || '');
   const [content, setContent] = useState(blogData?.content || '');
-  const [tags, setTags] = useState(blogData?.tags.join(', ') || '');
+  const [tags, setTags] = useState(blogData?.tags ? blogData.tags.join(', ') : '');
   const [category, setCategory] = useState(blogData?.category || '');
   const [permalink, setPermalink] = useState(blogData?.permalink || '');
   const [author, setAuthor] = useState(blogData?.author || 'Healing Homoeopathy');
   const [publishTime, setPublishTime] = useState(blogData?.publishTime || new Date());
   const [featuredImage, setFeaturedImage] = useState(blogData?.featuredImage || null);
   const [status, setStatus] = useState(blogData?.status || 'draft');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const editor = useRef(null);
 
+  // Auto-generate permalink based on title, avoiding special characters
   useEffect(() => {
-    setPermalink(title.toLowerCase().replace(/\s+/g, '-'));
+    const sanitizedPermalink = title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+    setPermalink(sanitizedPermalink);
   }, [title]);
 
-  const handleImageChange = (e) => {
+  // Image upload with validation for title and permalink
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    setFeaturedImage(file);
-    onImageUpload(file);
+    if (!title || !permalink) {
+      setSnackbar({
+        open: true,
+        message: 'Please provide a title and permalink before uploading an image.',
+        severity: 'warning',
+      });
+      return;
+    }
+
+    if (file) {
+      try {
+        const fileExtension = file.type.split('/')[1]; // Get file extension
+        console.log('### fileExtension', fileExtension);
+        const imageName = `${permalink}.${fileExtension}`;
+        console.log('### imageName', imageName);
+        const folderPath = `blog/${permalink}`;
+        console.log('### folderPath', folderPath);
+        const imageUrl = await uploadFile(file, folderPath, imageName);
+        console.log('### imageUrl', imageUrl);
+        setFeaturedImage(imageUrl);
+        setSnackbar({ open: true, message: 'Image uploaded successfully!', severity: 'success' });
+      } catch (error) {
+        setSnackbar({ open: true, message: 'Error uploading image. Please try again.', severity: 'error' });
+      }
+    }
   };
 
   const handleSubmit = () => {
-    onSubmit({
+    if (!title || !permalink) {
+      setSnackbar({
+        open: true,
+        message: 'Blog Title and Permalink are required.',
+        severity: 'error',
+      });
+      return;
+    }
+
+    const blogData = {
       title,
       content,
       tags: tags.split(',').map(tag => tag.trim()),
@@ -50,7 +90,13 @@ const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
       publishTime,
       featuredImage,
       status,
-    });
+    };
+
+    onSubmit(blogData);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ open: false, message: '', severity: 'success' });
   };
 
   return (
@@ -80,7 +126,7 @@ const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
             <CardContent>
               <Button variant="contained" component="label" fullWidth>
                 Upload Featured Image
-                <input type="file" hidden onChange={handleImageChange} />
+                <input type="file" hidden onChange={handleImageUpload} />
               </Button>
               {featuredImage && (
                 <CardMedia
@@ -112,8 +158,9 @@ const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
                 fullWidth
                 label="Permalink"
                 value={permalink}
-                onChange={(e) => setPermalink(e.target.value)}
+                onChange={(e) => setPermalink(e.target.value.replace(/[^\w\s-]/g, '').replace(/\s+/g, '-'))}
                 sx={{ mt: 2 }}
+                required
               />
 
               {/* Status Dropdown */}
@@ -149,21 +196,19 @@ const BlogForm = ({ blogData, onSubmit, onSaveDraft, onImageUpload }) => {
             color="primary"
             fullWidth
             sx={{ mt: 2 }}
-            onClick={() => handleSubmit('published')}
+            onClick={handleSubmit}
           >
-            Publish
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            fullWidth
-            sx={{ mt: 1 }}
-            onClick={() => handleSubmit('draft')}
-          >
-            Save as Draft
+            {isEditMode ? 'Update Blog' : 'Publish Blog'}
           </Button>
         </Grid>
       </Grid>
+
+      {/* Snackbar for success/error messages */}
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </form>
   );
 };

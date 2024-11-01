@@ -1,20 +1,23 @@
 // src/components/admin/blog/CreateBlog.js
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Snackbar, Alert } from '@mui/material';
 import BlogForm from './BlogForm';
 import blogService from '../../../services/blogService';
 
 const CreateBlog = () => {
   const [feedbackMessage, setFeedbackMessage] = useState(''); // State for feedback message
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   const handleSubmit = async (data) => {
     try {
-      await blogService.createOrUpdateBlog(data);
-      setFeedbackMessage('Blog created successfully!'); // Set success message
-      setTimeout(() => setFeedbackMessage(''), 3000); // Clear the message after 3 seconds
+      await blogService.createBlog(data);
+      setFeedbackMessage('Blog created successfully!');
+      setSnackbar({ open: true, message: 'Blog created successfully!', severity: 'success' });
+      setTimeout(() => setFeedbackMessage(''), 3000);
     } catch (error) {
       console.error('Error creating blog:', error);
-      setFeedbackMessage('Failed to create the blog'); // Set error message
+      setFeedbackMessage('Failed to create the blog');
+      setSnackbar({ open: true, message: 'Failed to create the blog', severity: 'error' });
       setTimeout(() => setFeedbackMessage(''), 3000);
     }
   };
@@ -22,6 +25,10 @@ const CreateBlog = () => {
   const handlePreview = (data) => {
     sessionStorage.setItem('previewBlog', JSON.stringify(data));
     window.open('/admin/blog/preview', '_blank');
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ open: false, message: '', severity: 'success' });
   };
 
   return (
@@ -36,6 +43,13 @@ const CreateBlog = () => {
         </Button>
       </Box>
       <BlogForm onSubmit={handleSubmit} onSaveDraft={handleSubmit} onImageUpload={() => {}} />
+      
+      {/* Snackbar for success/error messages */}
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

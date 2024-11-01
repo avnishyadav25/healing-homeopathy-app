@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Box, AppBar, Toolbar, Button, Container, Typography, MenuItem, Drawer, Divider, IconButton, Menu } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import ToggleColorMode from '../ToggleColorMode';
+import ToggleColorMode from '../public/common/ToggleColorMode';
 import logo from '../../assets/logo.svg';
 
 const logoStyle = {
@@ -124,6 +124,9 @@ function NavigationBar({ mode, toggleColorMode }) {
                 </Typography>
               )}
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <MenuItem component={Link} to="/">
+                  <Typography color={navTextColor}>Home</Typography>
+                </MenuItem>
                 <MenuItem component={Link} to="/about">
                   <Typography color={navTextColor}>About</Typography>
                 </MenuItem>
@@ -132,6 +135,9 @@ function NavigationBar({ mode, toggleColorMode }) {
                 </MenuItem>
                 <MenuItem component={Link} to="/blogs">
                   <Typography color={navTextColor}>Blogs</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to="/forum">
+                  <Typography color={navTextColor}>Forum</Typography>
                 </MenuItem>
                 <MenuItem component={Link} to="/contact">
                   <Typography color={navTextColor}>Contact</Typography>
