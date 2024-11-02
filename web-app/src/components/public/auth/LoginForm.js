@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, TextField, Typography, Avatar, Grid, Link, Alert, FormControlLabel, Checkbox } from '@mui/material';
+import { Box, Button, TextField, Typography, Avatar, Grid, Link, Alert, FormControlLabel, Checkbox, useTheme } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FaGoogle } from 'react-icons/fa';
 import authService from '../../../services/authService';
 
 const LoginForm = () => {
+  const theme = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -23,8 +24,7 @@ const LoginForm = () => {
       console.log('#### token ', token);
       console.log('#### role ', role);
 
-      // Store token and role based on "Remember me" option
-      if (rememberMe) { 
+      if (rememberMe) {
         localStorage.setItem('token', token);
         localStorage.setItem('role', role);
       } else {
@@ -32,7 +32,6 @@ const LoginForm = () => {
         sessionStorage.setItem('role', role);
       }
 
-      // Redirect based on role
       if (role === 'Admin' || role === 'Super Admin') {
         navigate('/admin');
       } else {
@@ -53,9 +52,14 @@ const LoginForm = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        backgroundColor: theme.palette.background.default, // Theme-based background color
+        color: theme.palette.text.primary, // Theme-based text color
+        p: 3,
+        borderRadius: 2,
+        boxShadow: 3,
       }}
     >
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+      <Avatar sx={{ m: 1, bgcolor: theme.palette.secondary.main }}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
@@ -84,6 +88,9 @@ const LoginForm = () => {
           autoFocus
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          sx={{
+            input: { color: theme.palette.text.primary },
+          }}
         />
         <TextField
           margin="normal"
@@ -96,6 +103,9 @@ const LoginForm = () => {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          sx={{
+            input: { color: theme.palette.text.primary },
+          }}
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
@@ -113,12 +123,12 @@ const LoginForm = () => {
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link href="#" variant="body2">
+            <Link href="#" variant="body2" color="primary">
               Forgot password?
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/register" variant="body2">
+            <Link href="/register" variant="body2" color="primary">
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>
