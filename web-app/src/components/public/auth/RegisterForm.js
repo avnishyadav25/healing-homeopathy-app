@@ -14,11 +14,13 @@ import {
   Typography,
   MenuItem,
   Alert,
+  useTheme,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { FaGoogle } from 'react-icons/fa';
 
 const RegisterForm = () => {
+  const theme = useTheme();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -80,10 +82,11 @@ const RegisterForm = () => {
         p: 4,
         borderRadius: 2,
         textAlign: 'center',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: theme.palette.background.paper, // Dynamic background color
+        color: theme.palette.text.primary, // Dynamic text color
       }}
     >
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+      <Avatar sx={{ m: 1, bgcolor: theme.palette.secondary.main }}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
@@ -193,7 +196,7 @@ const RegisterForm = () => {
         </Button>
         <Grid container justifyContent="center">
           <Grid item>
-            <Link href="/login" variant="body2">
+            <Link href="/login" variant="body2" color="primary">
               {"Already have an account? Log In"}
             </Link>
           </Grid>

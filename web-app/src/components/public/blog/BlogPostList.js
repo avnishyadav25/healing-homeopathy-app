@@ -1,34 +1,86 @@
 // src/components/admin/blog/BlogPostList.js
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
+  Avatar,
+  AvatarGroup,
   Box,
-  Container,
-  Typography,
-  Grid,
   Card,
-  CardMedia,
   CardContent,
+  CardMedia,
+  Chip,
+  Container,
+  Grid,
   IconButton,
+  Typography,
+  FormControl,
   InputAdornment,
   OutlinedInput,
-  Chip,
-  Pagination,
-  AvatarGroup,
-  Avatar,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { styled } from '@mui/material/styles';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
 import blogService from '../../../services/blogService';
 import categoryService from '../../../services/categoryService';
+
+const SyledCard = styled(Card)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  backgroundColor: (theme.vars || theme).palette.background.paper,
+  '&:hover': {
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+  },
+}));
+
+const SyledCardContent = styled(CardContent)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 4,
+  padding: 16,
+  flexGrow: 1,
+  '&:last-child': {
+    paddingBottom: 16,
+  },
+});
+
+const StyledTypography = styled(Typography)({
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 2,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+});
+
+function Author({ authors }) {
+  return (
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+      <AvatarGroup max={3}>
+        {authors.map((author, index) => (
+          <Avatar key={index} alt={author.name} src={author.avatar} sx={{ width: 24, height: 24 }} />
+        ))}
+      </AvatarGroup>
+      <Typography variant="caption">{authors.map((author) => author.name).join(', ')}</Typography>
+    </Box>
+  );
+}
+
+Author.propTypes = {
+  authors: PropTypes.arrayOf(
+    PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 const BlogPostList = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [categories, setCategories] = useState(['All categories']);
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(6);
   const [selectedCategory, setSelectedCategory] = useState('All categories');
 
   useEffect(() => {
@@ -40,7 +92,6 @@ const BlogPostList = () => {
         console.error('Error fetching categories:', error);
       }
     };
-
     fetchCategories();
   }, []);
 
@@ -48,8 +99,8 @@ const BlogPostList = () => {
     const fetchPosts = async () => {
       try {
         const { blogs } = await blogService.fetchBlogs({
-          page: currentPage,
-          limit: postsPerPage,
+          page: 1,
+          limit: 6,
           category: selectedCategory !== 'All categories' ? selectedCategory : '',
         });
         setPosts(blogs);
@@ -58,9 +109,8 @@ const BlogPostList = () => {
         console.error('Error fetching blogs:', error);
       }
     };
-
     fetchPosts();
-  }, [currentPage, postsPerPage, selectedCategory]);
+  }, [selectedCategory]);
 
   const handleSearch = (event) => {
     const value = event.target.value;
@@ -71,21 +121,18 @@ const BlogPostList = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1);
   };
-
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   return (
     <Container maxWidth="lg" sx={{ padding: '24px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <div>
           <Typography variant="h1" gutterBottom>
-             Blog
+            Blog
           </Typography>
           <Typography variant="body1">Stay in the loop with the latest about our products</Typography>
         </div>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <FormControl sx={{ width: { xs: '100%', md: '25ch' } }} variant="outlined">
           <OutlinedInput
             id="search"
             value={searchTerm}
@@ -93,15 +140,15 @@ const BlogPostList = () => {
             placeholder="Search…"
             size="small"
             startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon />
+              <InputAdornment position="start" sx={{ color: 'text.primary' }}>
+                <SearchRoundedIcon fontSize="small" />
               </InputAdornment>
             }
           />
           <IconButton aria-label="RSS feed">
             <RssFeedRoundedIcon />
           </IconButton>
-        </Box>
+        </FormControl>
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
@@ -118,41 +165,38 @@ const BlogPostList = () => {
 
       {filteredPosts.length === 0 && (
         <Typography variant="h6" color="textSecondary" textAlign="center" mt={4}>
-          No blogs found for "{selectedCategory}". Here are all blogs.
+          No blogs found for "{selectedCategory}". Showing all blogs.
         </Typography>
       )}
 
       <Grid container spacing={2}>
-        {filteredPosts.slice(0, postsPerPage).map((post) => (
+        {filteredPosts.map((post) => (
           <Grid item xs={12} md={4} key={post._id}>
-            <Card sx={{ mb: 3 }}>
+            <SyledCard>
               <CardMedia
                 component="img"
                 height="140"
                 image={`${process.env.REACT_APP_API_URL}${post.featuredImage}`}
                 alt={post.title}
               />
-              <CardContent>
+              <SyledCardContent>
                 <Typography variant="caption" gutterBottom>
                   {post.category}
                 </Typography>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" component="div">
                   <Link to={`/blogs/${post._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     {post.title}
                   </Link>
                 </Typography>
-                <Typography variant="body2" color="textSecondary" gutterBottom>
-                  {post.author} - {new Date(post.publishTime).toLocaleDateString()}
-                </Typography>
-              </CardContent>
-            </Card>
+                <StyledTypography variant="body2" color="text.secondary">
+                  {post.description}
+                </StyledTypography>
+              </SyledCardContent>
+              <Author authors={[{ name: post.author, avatar: '/static/images/avatar/1.jpg' }]} />
+            </SyledCard>
           </Grid>
         ))}
       </Grid>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <Pagination count={totalPages} page={currentPage} onChange={(event, value) => setCurrentPage(value)} />
-      </Box>
     </Container>
   );
 };
