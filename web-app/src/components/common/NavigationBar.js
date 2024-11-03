@@ -3,7 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, AppBar, Toolbar, Button, Container, Typography, MenuItem, Drawer, Divider, IconButton, Menu } from '@mui/material';
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Button,
+  Container,
+  Typography,
+  MenuItem,
+  Drawer,
+  Divider,
+  IconButton,
+  Menu,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ToggleColorMode from '../public/common/ToggleColorMode';
@@ -17,6 +29,8 @@ const logoStyle = {
 
 function NavigationBar({ mode, toggleColorMode }) {
   const [open, setOpen] = useState(false);
+  const [navDrawerOpen, setNavDrawerOpen] = useState(false);
+  const [userDrawerOpen, setUserDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
@@ -56,11 +70,13 @@ function NavigationBar({ mode, toggleColorMode }) {
     navigate('/');
   };
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
+  const toggleNavDrawer = (newOpen) => () => {
+    setNavDrawerOpen(newOpen);
+  };
+  const toggleUserDrawer = (newOpen) => () => {
+    setUserDrawerOpen(newOpen);
   };
 
-  // Define color based on the theme mode
   const navTextColor = mode === 'light' ? 'black' : 'white';
 
   return (
@@ -97,6 +113,30 @@ function NavigationBar({ mode, toggleColorMode }) {
                   : '0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)',
             })}
           >
+            {/* Left Hamburger Menu for General Navigation in Mobile View */}
+            <IconButton
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleNavDrawer(true)}
+              sx={{ display: { xs: 'block', md: 'none' }, color: navTextColor, mr: 1 }}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Drawer anchor="left" open={navDrawerOpen} onClose={toggleNavDrawer(false)}>
+              <Box sx={{ p: 2, minWidth: '60vw' }}>
+                <MenuItem component={Link} to="/" onClick={toggleNavDrawer(false)}>Home</MenuItem>
+                <MenuItem component={Link} to="/about" onClick={toggleNavDrawer(false)}>About</MenuItem>
+                <MenuItem component={Link} to="/services" onClick={toggleNavDrawer(false)}>Services</MenuItem>
+                <MenuItem component={Link} to="/blogs" onClick={toggleNavDrawer(false)}>Blogs</MenuItem>
+                <MenuItem component={Link} to="/discussions" onClick={toggleNavDrawer(false)}>Discussions</MenuItem>
+                <MenuItem component={Link} to="/products" onClick={toggleNavDrawer(false)}>Products</MenuItem>
+                <MenuItem component={Link} to="/contact" onClick={toggleNavDrawer(false)}>Contact</MenuItem>
+                <MenuItem component={Link} to="/order-medicine" onClick={toggleNavDrawer(false)}>Order Medicine</MenuItem>
+              </Box>
+            </Drawer>
+
+            {/* Logo */}
             <Box
               sx={{
                 flexGrow: 1,
@@ -123,8 +163,9 @@ function NavigationBar({ mode, toggleColorMode }) {
                   Healing Homoeopathy
                 </Typography>
               )}
+              {/* Desktop Navigation Links */}
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <MenuItem component={Link} to="/">
+                <MenuItem component={Link} to="/">
                   <Typography color={navTextColor}>Home</Typography>
                 </MenuItem>
                 <MenuItem component={Link} to="/about">
@@ -136,8 +177,11 @@ function NavigationBar({ mode, toggleColorMode }) {
                 <MenuItem component={Link} to="/blogs">
                   <Typography color={navTextColor}>Blogs</Typography>
                 </MenuItem>
-                <MenuItem component={Link} to="/forum">
-                  <Typography color={navTextColor}>Forum</Typography>
+                <MenuItem component={Link} to="/discussions">
+                  <Typography color={navTextColor}>Discussions</Typography>
+                </MenuItem>
+                <MenuItem component={Link} to="/products">
+                  <Typography color={navTextColor}>Products</Typography>
                 </MenuItem>
                 <MenuItem component={Link} to="/contact">
                   <Typography color={navTextColor}>Contact</Typography>
@@ -147,6 +191,7 @@ function NavigationBar({ mode, toggleColorMode }) {
                 </MenuItem>
               </Box>
             </Box>
+
             <Box
               sx={{
                 display: { xs: 'none', md: 'flex' },
@@ -164,70 +209,110 @@ function NavigationBar({ mode, toggleColorMode }) {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleMenuClose}
+                    sx={{
+                      '& .MuiPaper-root': {
+                        backgroundColor:
+                          mode === 'light' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.7)',
+                        backdropFilter: 'blur(10px)',
+                        color: navTextColor,
+                      },
+                    }}
                   >
-                    <MenuItem onClick={() => navigate('/profile')}>My Profile</MenuItem>
+                    <MenuItem onClick={() => navigate('/my-profile')}>My Profile</MenuItem>
+                    <MenuItem onClick={() => navigate('/my-blogs')}>My Blogs</MenuItem>
+                    <MenuItem onClick={() => navigate('/my-discussions')}>My Discussions</MenuItem>
+                    <MenuItem onClick={() => navigate('/my-appointments')}>My Appointments</MenuItem>
+                    <MenuItem onClick={() => navigate('/my-rewards')}>My Rewards</MenuItem>
+                    <Divider />
                     {userRole === 'Admin' || userRole === 'Super Admin' ? (
                       <MenuItem onClick={() => navigate('/admin')}>Admin Dashboard</MenuItem>
                     ) : null}
+                    <MenuItem onClick={() => navigate('/my-settings')}>My Settings</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
                 </>
               ) : (
                 <>
-                  <Button color="inherit" variant="text" size="small" component={Link} to="/login" sx={{ color: navTextColor }}>
+                  <Button
+                    color="inherit"
+                    variant="text"
+                    size="small"
+                    component={Link}
+                    to="/login"
+                    sx={{ color: navTextColor }}
+                  >
                     Login
                   </Button>
-                  <Button color="primary" variant="contained" size="small" component={Link} to="/register">
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                    component={Link}
+                    to="/register"
+                  >
                     Register
                   </Button>
                 </>
               )}
             </Box>
-            <Box sx={{ display: { sm: '', md: 'none' } }}>
+
+            {/* Right Hamburger Menu for User Options and Dark Mode in Mobile View */}
+            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
               <IconButton
-                variant="text"
                 color="inherit"
-                aria-label="menu"
-                onClick={toggleDrawer(true)}
-                sx={{ minWidth: '30px', p: '4px', color: navTextColor }}
+                aria-label="user-menu"
+                onClick={toggleUserDrawer(true)}
+                sx={{ color: navTextColor }}
               >
                 <MenuIcon />
               </IconButton>
-              <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-                <Box sx={{ minWidth: '60dvw', p: 2, backgroundColor: 'background.paper', flexGrow: 1 }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end', flexGrow: 1 }}>
+              <Drawer anchor="right" open={userDrawerOpen} onClose={toggleUserDrawer(false)}>
+                <Box sx={{ p: 2, minWidth: '60vw' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
-                  <MenuItem component={Link} to="/about" sx={{ color: navTextColor }}>
-                    About
-                  </MenuItem>
-                  <MenuItem component={Link} to="/services" sx={{ color: navTextColor }}>
-                    Services
-                  </MenuItem>
-                  <MenuItem component={Link} to="/blogs" sx={{ color: navTextColor }}>
-                    Blogs
-                  </MenuItem>
-                  <MenuItem component={Link} to="/contact" sx={{ color: navTextColor }}>
-                    Contact
-                  </MenuItem>
-                  <MenuItem component={Link} to="/order-medicine" sx={{ color: navTextColor }}>
-                    Order Medicine
-                  </MenuItem>
-                  <Divider />
                   {isLoggedIn ? (
                     <>
-                      <MenuItem onClick={() => navigate('/profile')}>My Profile</MenuItem>
+                      <MenuItem component={Link} to="/my-profile" onClick={toggleUserDrawer(false)}>
+                        My Profile
+                      </MenuItem>
+                      <MenuItem component={Link} to="/my-blogs" onClick={toggleUserDrawer(false)}>
+                        My Blogs
+                      </MenuItem>
+                      <MenuItem
+                        component={Link}
+                        to="/my-discussions"
+                        onClick={toggleUserDrawer(false)}
+                      >
+                        My Discussions
+                      </MenuItem>
+                      <MenuItem
+                        component={Link}
+                        to="/my-appointments"
+                        onClick={toggleUserDrawer(false)}
+                      >
+                        My Appointments
+                      </MenuItem>
+                      <MenuItem component={Link} to="/my-rewards" onClick={toggleUserDrawer(false)}>
+                        My Rewards
+                      </MenuItem>
+                      <Divider />
                       {userRole === 'Admin' || userRole === 'Super Admin' ? (
-                        <MenuItem onClick={() => navigate('/admin')}>Admin Dashboard</MenuItem>
+                        <MenuItem component={Link} to="/admin" onClick={toggleUserDrawer(false)}>
+                          Admin Dashboard
+                        </MenuItem>
                       ) : null}
+                      <MenuItem component={Link} to="/my-settings" onClick={toggleUserDrawer(false)}>
+                        My Settings
+                      </MenuItem>
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </>
                   ) : (
                     <>
-                      <MenuItem component={Link} to="/login">
+                      <MenuItem component={Link} to="/login" onClick={toggleUserDrawer(false)}>
                         Login
                       </MenuItem>
-                      <MenuItem component={Link} to="/register">
+                      <MenuItem component={Link} to="/register" onClick={toggleUserDrawer(false)}>
                         Register
                       </MenuItem>
                     </>
