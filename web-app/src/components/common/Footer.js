@@ -11,9 +11,9 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import IconButton from '@mui/material/IconButton';
-import logo from '../../assets/logo.svg'; // Ensure this path is correct
-import NewsletterForm from './NewsletterForm'; // Import the NewsletterForm
-import SectionDivider from '../public/common/SectionDivider'; // Import the NewsletterForm
+import logo from '../../assets/logo.svg';
+import NewsletterForm from './NewsletterForm';
+import SectionDivider from '../public/common/SectionDivider';
 
 const logoStyle = {
   width: '157px',
@@ -28,7 +28,10 @@ function Copyright() {
         Healing Homoeopathy
       </Link>{' '}
       {new Date().getFullYear()}
-      {'. All rights reserved.'}
+      {'. All rights reserved. '} 
+      <Link href="https://www.instagram.com/dr.aparna_medicare" color="inherit" target="_blank" rel="noopener noreferrer">
+        Managed by Dr. Aparna Medicare
+      </Link>
     </Typography>
   );
 }
@@ -69,7 +72,7 @@ export default function Footer() {
             }}
           >
             <img
-              src={logo} // Update with the actual path to your logo
+              src={logo}
               style={logoStyle}
               alt="Healing Homoeopathy Logo"
             />
@@ -79,7 +82,7 @@ export default function Footer() {
             <Typography variant="body2" color="text.secondary" mb={2}>
               Subscribe to our newsletter for updates and wellness tips.
             </Typography>
-            <NewsletterForm /> {/* Replacing the form with NewsletterForm component */}
+            <NewsletterForm />
           </Box>
 
           <Box
@@ -90,7 +93,7 @@ export default function Footer() {
             }}
           >
             <Typography variant="body2" fontWeight={600}>
-              Sitemap
+              Navigation
             </Typography>
             <Link href="/" color="text.secondary">
               Home
@@ -104,8 +107,17 @@ export default function Footer() {
             <Link href="/blogs" color="text.secondary">
               Blogs
             </Link>
+            <Link href="/discussions" color="text.secondary">
+              Discussions
+            </Link>
+            <Link href="/products" color="text.secondary">
+              Products
+            </Link>
             <Link href="/contact" color="text.secondary">
               Contact Us
+            </Link>
+            <Link href="/order-medicine" color="text.secondary">
+              Order Medicine
             </Link>
           </Box>
 
