@@ -1,11 +1,58 @@
 // /src/components/admin/SideNavBar.js
 import React, { useState } from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, IconButton, Divider } from '@mui/material';
-import { ExpandLess, ExpandMore, Menu, Home, Dashboard, Edit, Forum, LocalShipping, AccountCircle, AddBox, Business, CalendarToday, Comment, Build, People, Label, Category  } from '@mui/icons-material';
+import {
+  Drawer,
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  Divider,
+  Typography,
+} from '@mui/material';
+import {
+  ExpandLess,
+  ExpandMore,
+  Menu as MenuIcon,
+  Home,
+  Dashboard,
+  Edit,
+  Forum,
+  LocalShipping,
+  AccountCircle,
+  AddBox,
+  Business,
+  CalendarToday,
+  Comment,
+  Build,
+  People,
+  Label,
+  Category,
+} from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 const collapsedDrawerWidth = 70;
+
+const Toggler = ({ defaultExpanded = false, renderToggle, children }) => {
+  const [open, setOpen] = useState(defaultExpanded);
+  return (
+    <>
+      {renderToggle({ open, setOpen })}
+      <Box
+        sx={{
+          display: 'grid',
+          transition: '0.2s ease',
+          gridTemplateRows: open ? '1fr' : '0fr',
+          '& > *': { overflow: 'hidden' },
+        }}
+      >
+        {children}
+      </Box>
+    </>
+  );
+};
 
 const SideNavBar = ({ isOpen, toggleDrawer }) => {
   const [open, setOpen] = useState({});
@@ -23,108 +70,88 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
     <Drawer
       variant="permanent"
       sx={{
-        width: collapsed ? collapsedDrawerWidth : drawerWidth,
+        width: { xs: collapsed ? 0 : drawerWidth, md: collapsed ? collapsedDrawerWidth : drawerWidth },
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: {
-          width: collapsed ? collapsedDrawerWidth : drawerWidth,
+          width: { xs: collapsed ? 0 : drawerWidth, md: collapsed ? collapsedDrawerWidth : drawerWidth },
           boxSizing: 'border-box',
           marginTop: '80px',
           transition: 'width 0.3s',
         },
+        display: { xs: collapsed ? 'none' : 'block', md: 'block' },
       }}
     >
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <IconButton onClick={toggleCollapse}>
-          <Menu />
+          <MenuIcon />
         </IconButton>
+        {!collapsed && (
+          <Typography variant="h6" component="div" sx={{ ml: 2 }}>
+            Admin Panel
+          </Typography>
+        )}
       </Box>
       <Divider />
       <List component="nav">
         <ListItem button component={Link} to="/admin">
-          <ListItemIcon>
-            <Home />
-          </ListItemIcon>
+          <Home />
           {!collapsed && <ListItemText primary="Home" />}
         </ListItem>
-        {/* User Management Link */}
+
         <ListItem button component={Link} to="/admin/users">
-          <ListItemIcon>
-            <People />
-          </ListItemIcon>
+          <People />
           {!collapsed && <ListItemText primary="User Management" />}
         </ListItem>
 
-        {/* Blog Link */}
         <ListItem button component={Link} to="/admin/blogs">
-          <ListItemIcon>
-            <Edit />
-          </ListItemIcon>
+          <Edit />
           {!collapsed && <ListItemText primary="Blogs" />}
         </ListItem>
 
-        {/* Appointments Link */}
         <ListItem button component={Link} to="/admin/appointments">
-          <ListItemIcon>
-            <CalendarToday />
-          </ListItemIcon>
+          <CalendarToday />
           {!collapsed && <ListItemText primary="Appointments" />}
         </ListItem>
 
-        {/* Comments Link */}
         <ListItem button component={Link} to="/admin/comments">
-          <ListItemIcon>
-            <Comment />
-          </ListItemIcon>
+          <Comment />
           {!collapsed && <ListItemText primary="Comments" />}
         </ListItem>
 
-        {/* Forum Link */}
         <ListItem button component={Link} to="/admin/forum">
-          <ListItemIcon>
-            <Forum />
-          </ListItemIcon>
+          <Forum />
           {!collapsed && <ListItemText primary="Forum" />}
         </ListItem>
 
-        {/* Dashboard Link */}
         <ListItem button component={Link} to="/admin/dashboard">
-          <ListItemIcon>
-            <Dashboard />
-          </ListItemIcon>
+          <Dashboard />
           {!collapsed && <ListItemText primary="Dashboard" />}
         </ListItem>
 
-        {/* Services Link */}
         <ListItem button component={Link} to="/admin/services">
-          <ListItemIcon>
-            <Build />
-          </ListItemIcon>
+          <Build />
           {!collapsed && <ListItemText primary="Services" />}
         </ListItem>
 
         <ListItem button component={Link} to="/admin/tags">
-          <ListItemIcon>
-            <Label />
-          </ListItemIcon>
+          <Label />
           {!collapsed && <ListItemText primary="Tags" />}
         </ListItem>
 
         <ListItem button component={Link} to="/admin/categories">
-          <ListItemIcon>
-            <Category />
-          </ListItemIcon>
+          <Category />
           {!collapsed && <ListItemText primary="Categories" />}
         </ListItem>
 
-        {/* Order Management */}
-        <ListItem button onClick={() => handleClick('order')}>
-          <ListItemIcon>
-            <LocalShipping />
-          </ListItemIcon>
-          {!collapsed && <ListItemText primary="Order Management" />}
-          {open.order && !collapsed ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open.order && !collapsed} timeout="auto" unmountOnExit>
+        <Toggler
+          renderToggle={({ open, setOpen }) => (
+            <ListItem button onClick={() => setOpen(!open)}>
+              <LocalShipping />
+              {!collapsed && <ListItemText primary="Order Management" />}
+              {open && !collapsed ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+          )}
+        >
           <List component="div" disablePadding>
             <ListItem button>
               <ListItemText inset primary="Current Orders" />
@@ -133,17 +160,17 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
               <ListItemText inset primary="Order History" />
             </ListItem>
           </List>
-        </Collapse>
+        </Toggler>
 
-        {/* Account Settings */}
-        <ListItem button onClick={() => handleClick('account')}>
-          <ListItemIcon>
-            <AccountCircle />
-          </ListItemIcon>
-          {!collapsed && <ListItemText primary="Account" />}
-          {open.account && !collapsed ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open.account && !collapsed} timeout="auto" unmountOnExit>
+        <Toggler
+          renderToggle={({ open, setOpen }) => (
+            <ListItem button onClick={() => setOpen(!open)}>
+              <AccountCircle />
+              {!collapsed && <ListItemText primary="Account" />}
+              {open && !collapsed ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+          )}
+        >
           <List component="div" disablePadding>
             <ListItem button>
               <ListItemText inset primary="My Profile" />
@@ -155,17 +182,17 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
               <ListItemText inset primary="Logout" />
             </ListItem>
           </List>
-        </Collapse>
+        </Toggler>
 
-        {/* Admin Tools */}
-        <ListItem button onClick={() => handleClick('adminTools')}>
-          <ListItemIcon>
-            <AddBox />
-          </ListItemIcon>
-          {!collapsed && <ListItemText primary="Admin Tools" />}
-          {open.adminTools && !collapsed ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open.adminTools && !collapsed} timeout="auto" unmountOnExit>
+        <Toggler
+          renderToggle={({ open, setOpen }) => (
+            <ListItem button onClick={() => setOpen(!open)}>
+              <AddBox />
+              {!collapsed && <ListItemText primary="Admin Tools" />}
+              {open && !collapsed ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+          )}
+        >
           <List component="div" disablePadding>
             <ListItem button component={Link} to="/admin/product/add-product">
               <ListItemText inset primary="Add Product" />
@@ -174,25 +201,16 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
               <ListItemText inset primary="Add User" />
             </ListItem>
             <ListItem button component={Link} to="/admin/appointment/add-appointment">
-              <ListItemText inset primary="Add Appointment User" />
+              <ListItemText inset primary="Add Appointment" />
             </ListItem>
             <ListItem button component={Link} to="/admin/newsletter/add-newsletter-user">
               <ListItemText inset primary="Add Newsletter User" />
             </ListItem>
-            <ListItem button component={Link} to="/admin/appointment/add-appointment-template">
-              <ListItemText inset primary="Add Appointment Template" />
-            </ListItem>
-            <ListItem button component={Link} to="/admin/newsletter/add-newsletter-template">
-              <ListItemText inset primary="Add Newsletter Template" />
-            </ListItem>
           </List>
-        </Collapse>
+        </Toggler>
 
-        {/* Company Settings */}
         <ListItem button component={Link} to="/admin/company">
-          <ListItemIcon>
-            <Business />
-          </ListItemIcon>
+          <Business />
           {!collapsed && <ListItemText primary="Company Settings" />}
         </ListItem>
       </List>

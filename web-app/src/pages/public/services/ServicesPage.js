@@ -25,7 +25,6 @@ const ServicesPage = () => {
       </div>
       <NewsletterSection />
       <ContactUsSection />
-      <SectionDivider color="#004d40" thickness="3px" margin="40px 0" />
       </Template>
     </div>
   );
