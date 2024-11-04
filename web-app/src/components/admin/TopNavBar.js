@@ -63,9 +63,6 @@ const TopNavBar = ({ onMenuClick }) => {
   return (
     <AppBar position="fixed">
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={onMenuClick}>
-          <MenuIcon />
-        </IconButton>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Admin Dashboard
         </Typography>
