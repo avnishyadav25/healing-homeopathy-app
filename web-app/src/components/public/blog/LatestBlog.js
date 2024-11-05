@@ -99,7 +99,7 @@ export default function LatestBlog() {
   useEffect(() => {
     const fetchLatestBlogs = async () => {
       try {
-        const { blogs } = await blogService.fetchBlogs({ page: currentPage, limit: postsPerPage });
+        const { blogs } = await blogService.fetchBlogs({ page: currentPage, limit: postsPerPage, status: 'published' });
         setLatestBlogs(blogs);
       } catch (error) {
         console.error('Error fetching latest blogs:', error);
