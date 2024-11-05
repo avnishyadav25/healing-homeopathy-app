@@ -184,7 +184,7 @@ const BlogPostList = () => {
                   {post.category}
                 </Typography>
                 <Typography variant="h6" component="div">
-                  <Link to={`/blogs/${post._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Link to={`/blogs/${post.permalink}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     {post.title}
                   </Link>
                 </Typography>
