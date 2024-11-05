@@ -1,3 +1,4 @@
+// /src/routes/uploadRoute.js
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -15,8 +16,11 @@ const storage = multer.diskStorage({
     cb(null, uploadPath); // Save temporarily
   },
   filename: (req, file, cb) => {
-    const uniqueName = `${file.originalname}`;
-    cb(null, uniqueName);
+    const { imageName } = req.body; // Use imageName if provided
+    console.log('#### imageName = ', imageName);
+    const finalName = imageName || file.originalname; // Fallback to original filename if imageName isn't provided
+    console.log('#### finalName = ', finalName);
+    cb(null, finalName);
   }
 });
 

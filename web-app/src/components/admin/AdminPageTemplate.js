@@ -1,4 +1,4 @@
-//web-app/src/components/admin/AdminPageTemplate.js
+// web-app/src/components/admin/AdminPageTemplate.js
 import React from 'react';
 import { Box, Container, CssBaseline } from '@mui/material';
 import SideNavBar from './SideNavBar';
@@ -26,7 +26,7 @@ const AdminPageTemplate = ({ children }) => {
           transition: 'margin 0.3s ease-in-out',
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="xl" sx={{ px: { xs: 2, md: 4 } }}> {/* Updated maxWidth and padding */}
           {children}
         </Container>
       </Box>

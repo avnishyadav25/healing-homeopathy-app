@@ -1,4 +1,4 @@
-// src/components/admin/blog/BlogForm.js
+// /src/components/admin/blog/BlogForm.js
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
@@ -54,20 +54,71 @@ const BlogForm = ({ blogData = {}, onSubmit, isEditMode = false }) => {
 
     if (file) {
       try {
-        const fileExtension = file.type.split('/')[1]; // Get file extension
-        console.log('### fileExtension', fileExtension);
-        const imageName = `${permalink}.${fileExtension}`;
-        console.log('### imageName', imageName);
+        const fileExtension = file.type.split('/')[1];
+        const imageName = `${permalink}.${fileExtension}`;//`${permalink}.${fileExtension}`;
         const folderPath = `blog/${permalink}`;
-        console.log('### folderPath', folderPath);
         const imageUrl = await uploadFile(file, folderPath, imageName);
-        console.log('### imageUrl', imageUrl);
         setFeaturedImage(imageUrl);
         setSnackbar({ open: true, message: 'Image uploaded successfully!', severity: 'success' });
       } catch (error) {
         setSnackbar({ open: true, message: 'Error uploading image. Please try again.', severity: 'error' });
       }
     }
+  };
+
+  // Jodit Editor configuration with custom upload logic
+  const editorConfig = {
+    readonly: false,
+    uploader: {
+      insertImageAsBase64URI: false,
+      url: `${apiUrl}/upload`, // Adjust to your API's upload route if needed
+      isSuccess: (resp) => resp.success,
+      process: async (files) => {
+        const file = files[0];
+        if (!title || !permalink) {
+          setSnackbar({
+            open: true,
+            message: 'Please provide a title and permalink before uploading media.',
+            severity: 'warning',
+          });
+          return;
+        }
+
+        try {
+          const fileExtension = file.type.split('/')[1];
+          const fileName = `${permalink}-${Date.now()}.${fileExtension}`;
+          const folderPath = `blog/${permalink}`;
+          const fileUrl = await uploadFile(file, folderPath, fileName);
+          return {
+            success: true,
+            message: 'File uploaded successfully',
+            data: {
+              files: [{ url: `${apiUrl}${fileUrl}` }],
+            },
+          };
+        } catch (error) {
+          console.error('Error uploading media:', error);
+          return {
+            success: false,
+            message: 'Error uploading file.',
+          };
+        }
+      },
+    },
+    events: {
+      afterUpload(response) {
+        if (response.success) {
+          const { url } = response.data.files[0];
+          editor.current?.selection.insertImage(url, null, 300);
+        } else {
+          setSnackbar({
+            open: true,
+            message: response.message || 'Failed to upload media',
+            severity: 'error',
+          });
+        }
+      },
+    },
   };
 
   const handleSubmit = () => {
@@ -83,7 +134,7 @@ const BlogForm = ({ blogData = {}, onSubmit, isEditMode = false }) => {
     const blogData = {
       title,
       content,
-      tags: tags.split(',').map(tag => tag.trim()),
+      tags: tags.split(',').map((tag) => tag.trim()),
       category,
       permalink,
       author,
@@ -115,7 +166,7 @@ const BlogForm = ({ blogData = {}, onSubmit, isEditMode = false }) => {
               ref={editor}
               value={content}
               onBlur={(newContent) => setContent(newContent)}
-              config={{ readonly: false }}
+              config={editorConfig}
               tabIndex={1}
             />
           </Box>
@@ -163,7 +214,6 @@ const BlogForm = ({ blogData = {}, onSubmit, isEditMode = false }) => {
                 required
               />
 
-              {/* Status Dropdown */}
               <TextField
                 select
                 fullWidth
@@ -203,7 +253,6 @@ const BlogForm = ({ blogData = {}, onSubmit, isEditMode = false }) => {
         </Grid>
       </Grid>
 
-      {/* Snackbar for success/error messages */}
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}
