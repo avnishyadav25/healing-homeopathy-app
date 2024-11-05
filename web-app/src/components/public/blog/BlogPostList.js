@@ -101,6 +101,7 @@ const BlogPostList = () => {
         const { blogs } = await blogService.fetchBlogs({
           page: 1,
           limit: 6,
+          status:'published',
           category: selectedCategory !== 'All categories' ? selectedCategory : '',
         });
         setPosts(blogs);

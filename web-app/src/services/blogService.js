@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const fetchLatestBlogs = async (limit = 4) => {
+const fetchLatestBlogs = async (limit = 4, status='published') => {
   try {
-    const response = await axios.get(`${apiUrl}/blogs`, { params: { limit } });
+    const response = await axios.get(`${apiUrl}/blogs`, { params: { status, limit } });
     return response.data.blogs;
   } catch (error) {
     console.error('Error fetching latest blogs:', error);
@@ -20,7 +20,7 @@ const fetchBlogs = async ({ status = '', page = 1, limit = 10 }) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    throw new Error('Error fetching blogs');
+    throw new Error('Error fetching blogs'); 
   }
 };
 
