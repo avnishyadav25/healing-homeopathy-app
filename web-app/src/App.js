@@ -13,6 +13,9 @@ import BlogPage from './pages/public/blog/BlogPage';
 import BlogPostPage from './pages/public/blog/BlogPostPage';
 import ContactPage from './pages/public/contact/ContactPage';
 import OrderMedicinePage from './pages/public/services/OrderMedicinePage';
+import DiscussionPage from './pages/public/discussion/DiscussionPage';
+import ProductPage from './pages/public/product/ProductPage';
+
 import LoginPage from './pages/public/auth/LoginPage';
 import RegisterPage from './pages/public/auth/RegisterPage';
 import RoleSelectionPage from './pages/public/auth/RoleSelectionPage';
@@ -94,6 +97,8 @@ function App() {
             <Route path="/book-appointment" element={<BookAppointmentPage />} />
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:id" element={<BlogPostPage />} />
+            <Route path="/discussions" element={<DiscussionPage />} />
+            <Route path="/products" element={<ProductPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/order-medicine" element={<OrderMedicinePage />} />
             <Route path="/login" element={<LoginPage />} />
