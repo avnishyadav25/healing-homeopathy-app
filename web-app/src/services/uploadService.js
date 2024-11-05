@@ -1,10 +1,12 @@
 // /src/services/uploadService.js
 import axios from 'axios';
 
-const uploadFile = async (file, folder = 'default') => {
+const uploadFile = async (file, folder = 'default', imageName) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('folder', folder);
+  console.log('### imageName',imageName);
+  formData.append('imageName', imageName);
   console.log('### file',file);
   console.log('### folder',folder);
 
