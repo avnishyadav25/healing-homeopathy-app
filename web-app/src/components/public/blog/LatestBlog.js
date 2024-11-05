@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import blogService from '../../../services/blogService';
+import { Link } from 'react-router-dom'; // Import Link from react-router
+
 
 const StyledTypography = styled(Typography)({
   display: '-webkit-box',
@@ -94,7 +96,7 @@ Author.propTypes = {
 export default function LatestBlog() {
   const [latestBlogs, setLatestBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 6;
+  const postsPerPage = 10;
 
   useEffect(() => {
     const fetchLatestBlogs = async () => {
@@ -121,6 +123,7 @@ export default function LatestBlog() {
       <Grid container spacing={4} sx={{ my: 4 }}>
         {latestBlogs.map((blog, index) => (
           <Grid key={index} item xs={12} md={6}>
+            <Link to={`/blogs/${blog.permalink}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Box
               sx={{
                 display: 'flex',
@@ -129,6 +132,7 @@ export default function LatestBlog() {
               }}
             >
               {/* Image Section - 1/4 */}
+              
               <Box
                 component="img"
                 src={`${process.env.REACT_APP_API_URL}${blog.featuredImage}`}
@@ -157,7 +161,9 @@ export default function LatestBlog() {
                   date={new Date(blog.publishTime).toLocaleDateString()}
                 />
               </Box>
+             
             </Box>
+            </Link>
           </Grid>
         ))}
       </Grid>
