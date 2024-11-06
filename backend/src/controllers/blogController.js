@@ -14,7 +14,7 @@ const createBlog = async (req, res) => {
       title,
       content,
       tags: tags ? tags : [],
-      category,
+      category: category ? category : [],
       permalink: blogUrl,
       author,
       publishTime,
@@ -49,7 +49,7 @@ const updateBlog = async (req, res) => {
     blog.title = title || blog.title;
     blog.content = content || blog.content;
     blog.tags = tags ? tags : blog.tags;
-    blog.category = category || blog.category;
+    blog.category = category ? category : blog.category;
     blog.permalink = blogUrl;
     blog.author = author || blog.author;
     blog.publishTime = publishTime || blog.publishTime;

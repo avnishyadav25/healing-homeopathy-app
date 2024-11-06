@@ -66,4 +66,24 @@ const deleteTag = async (req, res) => {
   }
 };
 
-module.exports = { createTag, getTags, getTagById, updateTag, deleteTag };
+const createOrUpdateTags = async (req, res) => {
+  const { tags } = req.body; // Tags array from frontend
+
+  try {
+    const promises = tags.map(async (tagName) => {
+      let tag = await Tag.findOne({ name: tagName });
+      if (!tag) {
+        tag = await Tag.create({ name: tagName });
+      }
+      return tag;
+    });
+
+    const updatedTags = await Promise.all(promises); // Wait for all tags to be processed
+    res.status(200).json({ tags: updatedTags });
+  } catch (error) {
+    console.error('Error creating or updating tags:', error);
+    res.status(500).json({ error: 'Server error in creating or updating tags' });
+  }
+};
+
+module.exports = { createTag, getTags, getTagById, updateTag, deleteTag, createOrUpdateTags };

@@ -13,7 +13,7 @@ import BlogPage from './pages/public/blog/BlogPage';
 import BlogPostPage from './pages/public/blog/BlogPostPage';
 import ContactPage from './pages/public/contact/ContactPage';
 import OrderMedicinePage from './pages/public/services/OrderMedicinePage';
-import DiscussionPage from './pages/public/discussion/DiscussionPage';
+import DiscussionPage from './pages/public/forum/ForumListPage';
 import ProductPage from './pages/public/product/ProductPage';
 
 import LoginPage from './pages/public/auth/LoginPage';

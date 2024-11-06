@@ -66,4 +66,24 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-module.exports = { createCategory, getCategories, getCategoryById, updateCategory, deleteCategory };
+const createOrUpdateCategories = async (req, res) => {
+  const { categories } = req.body; // Tags array from frontend
+
+  try {
+    const promises = categories.map(async (categoryName) => {
+      let category = await Tag.findOne({ name: categoryName });
+      if (!category) {
+        category = await Category.create({ name: categoryName });
+      }
+      return category;
+    });
+
+    const updatedCategories = await Promise.all(promises); // Wait for all tags to be processed
+    res.status(200).json({ tags: updatedCategories });
+  } catch (error) {
+    console.error('Error creating or updating tags:', error);
+    res.status(500).json({ error: 'Server error in creating or updating tags' });
+  }
+};
+
+module.exports = { createCategory, getCategories, getCategoryById, updateCategory, deleteCategory, createOrUpdateCategories };

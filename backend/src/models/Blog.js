@@ -6,7 +6,7 @@ const blogSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   tags: { type: [String] },
-  category: { type: String },
+  category: { type: [String] },
   featuredImage: { type: String },
   permalink: { type: String, unique: true },
   author: { type: String, default: 'Healing Homoeopathy' },

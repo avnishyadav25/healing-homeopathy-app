@@ -21,6 +21,7 @@ const uploadRoutes = require('./routes/uploadRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const forumRoutes = require('./routes/forumRoutes');
 
 
 const app = express();
@@ -67,6 +68,7 @@ app.use('/upload', uploadRoutes);
 app.use('/company', companyRoutes);
 app.use('/tags', tagRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/forum', forumRoutes);
 
 
 // Serve uploaded files statically
