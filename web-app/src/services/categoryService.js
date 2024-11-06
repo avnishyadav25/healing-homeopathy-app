@@ -79,4 +79,16 @@ export const deleteCategory = async (id) => {
   }
 };
 
+export const createOrUpdateCategories = async (tags) => {
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/categories/createOrUpdate`, { tags });
+    return response.data.categories; // Return the updated list of tags from the backend
+  } catch (error) {
+    console.error('Error in createOrUpdateTags:', error);
+    throw error;
+  }
+};
+
+
+
 
