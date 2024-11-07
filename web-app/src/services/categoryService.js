@@ -79,15 +79,21 @@ export const deleteCategory = async (id) => {
   }
 };
 
-export const createOrUpdateCategories = async (tags) => {
+export const createOrUpdateCategories = async (categories) => {
+  // Ensure categories is an array, even if a single category string is passed
+  if (!Array.isArray(categories)) {
+    categories = [categories];
+  }
+
   try {
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/categories/createOrUpdate`, { tags });
-    return response.data.categories; // Return the updated list of tags from the backend
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/categories/createOrUpdate`, { categories });
+    return response.data.categories; // Return the updated list of categories from the backend
   } catch (error) {
-    console.error('Error in createOrUpdateTags:', error);
+    console.error('Error in createOrUpdateCategories:', error);
     throw error;
   }
 };
+
 
 
 

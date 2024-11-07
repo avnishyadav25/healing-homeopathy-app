@@ -177,8 +177,8 @@ function NavigationBar({ mode, toggleColorMode }) {
                 <MenuItem component={Link} to="/blogs">
                   <Typography color={navTextColor}>Blogs</Typography>
                 </MenuItem>
-                <MenuItem component={Link} to="/discussions">
-                  <Typography color={navTextColor}>Discussions</Typography>
+                <MenuItem component={Link} to="/forum">
+                  <Typography color={navTextColor}>Forum</Typography>
                 </MenuItem>
                 <MenuItem component={Link} to="/products">
                   <Typography color={navTextColor}>Products</Typography>

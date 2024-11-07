@@ -67,23 +67,28 @@ const deleteCategory = async (req, res) => {
 };
 
 const createOrUpdateCategories = async (req, res) => {
-  const { categories } = req.body; // Tags array from frontend
+  const { categories } = req.body; // Categories array from frontend
+
+  if (!Array.isArray(categories)) {
+    return res.status(400).json({ error: 'Invalid categories format. Expected an array.' });
+  }
 
   try {
     const promises = categories.map(async (categoryName) => {
-      let category = await Tag.findOne({ name: categoryName });
+      let category = await Category.findOne({ name: categoryName }); // Updated to Category
       if (!category) {
         category = await Category.create({ name: categoryName });
       }
       return category;
     });
 
-    const updatedCategories = await Promise.all(promises); // Wait for all tags to be processed
-    res.status(200).json({ tags: updatedCategories });
+    const updatedCategories = await Promise.all(promises); // Wait for all categories to be processed
+    res.status(200).json({ categories: updatedCategories }); // Updated to 'categories'
   } catch (error) {
-    console.error('Error creating or updating tags:', error);
-    res.status(500).json({ error: 'Server error in creating or updating tags' });
+    console.error('Error creating or updating categories:', error);
+    res.status(500).json({ error: 'Server error in creating or updating categories' });
   }
 };
+
 
 module.exports = { createCategory, getCategories, getCategoryById, updateCategory, deleteCategory, createOrUpdateCategories };

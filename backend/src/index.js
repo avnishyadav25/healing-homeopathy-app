@@ -22,6 +22,8 @@ const companyRoutes = require('./routes/companyRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const forumRoutes = require('./routes/forumRoutes');
+const authRoutes = require('./routes/authRoutes'); // Import auth routes
+
 
 
 const app = express();
@@ -69,6 +71,8 @@ app.use('/company', companyRoutes);
 app.use('/tags', tagRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/forum', forumRoutes);
+app.use('/auth', authRoutes); // Authentication routes
+
 
 
 // Serve uploaded files statically

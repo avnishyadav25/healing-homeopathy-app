@@ -32,3 +32,33 @@ export const postReply = async (questionId, replyData) => {
     throw error; // Rethrow error to be handled in the component if necessary
   }
 };
+
+export const getPopularQuestions = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/forum/popular-questions`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching popular questions:", error);
+    throw error;
+  }
+};
+
+export const getRecentQuestions = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/forum/recent-questions`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching recent questions:", error);
+    throw error;
+  }
+};
+
+export const getTags = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/forum/tags`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    throw error;
+  }
+};
