@@ -13,8 +13,10 @@ import BlogPage from './pages/public/blog/BlogPage';
 import BlogPostPage from './pages/public/blog/BlogPostPage';
 import ContactPage from './pages/public/contact/ContactPage';
 import OrderMedicinePage from './pages/public/services/OrderMedicinePage';
-import DiscussionPage from './pages/public/forum/ForumListPage';
+
 import ProductPage from './pages/public/product/ProductPage';
+import ForumFormPage from './pages/public/forum/ForumFormPage';
+import ForumListPage from './pages/public/forum/ForumListPage';
 
 import LoginPage from './pages/public/auth/LoginPage';
 import RegisterPage from './pages/public/auth/RegisterPage';
@@ -64,6 +66,8 @@ import ViewCategoryFormPage from './pages/admin/categories/ViewCategoryFormPage'
 
 import ProtectedRoute from './components/public/auth/ProtectedRoute';
 import AdminPageTemplate from './components/admin/AdminPageTemplate';
+import AuthProvider from './contexts/AuthContext';
+
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
@@ -97,13 +101,15 @@ function App() {
             <Route path="/book-appointment" element={<BookAppointmentPage />} />
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:id" element={<BlogPostPage />} />
-            <Route path="/discussions" element={<DiscussionPage />} />
+            <Route path="/forum" element={<ForumListPage />} />
+            <Route path="/forum/new" element={<ForumFormPage />} />
             <Route path="/products" element={<ProductPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/order-medicine" element={<OrderMedicinePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/role-selection" element={<RoleSelectionPage />} />
+
 
             {/* Admin Routes with AdminPageTemplate */}
             <Route element={<ProtectedRoute requiredRole="Super Admin" />}>

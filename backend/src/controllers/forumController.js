@@ -1,15 +1,22 @@
 const Question = require('../models/Question');
 const Reply = require('../models/Reply');
+const Tag = require('../models/Tag');
+
 
 // Post a new question
 exports.postQuestion = async (req, res) => {
   try {
-    const { title, content, tags, userId } = req.body;
-    const question = new Question({ title, content, tags, userId });
-    await question.save();
+    const { title, content, tags, categories } = req.body;
+    const question = await Question.create({
+      title,
+      content,
+      userId: req.user.id,
+      tags,
+      categories,
+    });
     res.status(201).json(question);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Failed to create question' });
   }
 };
 
@@ -26,15 +33,16 @@ exports.getQuestions = async (req, res) => {
 // Post a reply
 exports.postReply = async (req, res) => {
   try {
-    const { content, userId } = req.body;
+    const { content } = req.body;
     const { questionId } = req.params;
-    const reply = new Reply({ content, userId, questionId });
-    await reply.save();
-
-    await Question.findByIdAndUpdate(questionId, { $push: { replies: reply._id } });
+    const reply = await Reply.create({
+      content,
+      userId: req.user.id,
+      questionId,
+    });
     res.status(201).json(reply);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Failed to create reply' });
   }
 };
 
@@ -74,5 +82,35 @@ exports.deleteReply = async (req, res) => {
     res.status(200).json({ message: 'Reply deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getPopularQuestions = async (req, res) => {
+  try {
+    const popularQuestions = await Question.find().sort({ views: -1 }).limit(5);
+    res.status(200).json(popularQuestions);
+  } catch (error) {
+    console.error("Error fetching popular questions:", error);
+    res.status(500).json({ error: 'Failed to fetch popular questions.' });
+  }
+};
+
+exports.getRecentQuestions = async (req, res) => {
+  try {
+    const recentQuestions = await Question.find().sort({ createdAt: -1 }).limit(5);
+    res.status(200).json(recentQuestions);
+  } catch (error) {
+    console.error("Error fetching recent questions:", error);
+    res.status(500).json({ error: 'Failed to fetch recent questions.' });
+  }
+};
+
+exports.getTags = async (req, res) => {
+  try {
+    const tags = await Tag.find();
+    res.status(200).json(tags);
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    res.status(500).json({ error: 'Failed to fetch tags.' });
   }
 };

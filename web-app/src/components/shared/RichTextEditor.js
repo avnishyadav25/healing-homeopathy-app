@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { Box, Snackbar, Alert } from '@mui/material';
 import JoditEditor from 'jodit-react';
-import uploadFile from '../../../services/uploadService';
+import uploadFile from '../../services/uploadService';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

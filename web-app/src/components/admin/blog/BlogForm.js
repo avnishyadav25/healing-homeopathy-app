@@ -15,9 +15,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Datetime from 'react-datetime';
 import uploadFile from '../../../services/uploadService';
-import TagSelector from '../shared/TagSelector';
-import CategorySelector from '../shared/CategorySelector';
-import RichTextEditor from '../shared/RichTextEditor';
+import TagSelector from '../../shared/TagSelector';
+import CategorySelector from '../../shared/CategorySelector';
+import RichTextEditor from '../../shared/RichTextEditor';
 import 'react-datetime/css/react-datetime.css';
 
 const apiUrl = process.env.REACT_APP_API_URL;

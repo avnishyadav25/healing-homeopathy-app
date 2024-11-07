@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, IconButton, Autocomplete } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { fetchCategories, createOrUpdateCategories } from '../../../services/categoryService';
+import { fetchCategories, createOrUpdateCategories } from '../../services/categoryService';
 
 const CategorySelector = ({ categories, setCategories }) => {
   const [allCategories, setAllCategories] = useState([]);

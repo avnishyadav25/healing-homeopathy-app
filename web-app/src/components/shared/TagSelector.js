@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, IconButton, Autocomplete } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { fetchTags, createOrUpdateTags } from '../../../services/tagService';
+import { fetchTags, createOrUpdateTags } from '../../services/tagService';
 
 const TagSelector = ({ tags, setTags }) => {
   const [allTags, setAllTags] = useState([]);
