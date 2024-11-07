@@ -69,6 +69,10 @@ const deleteTag = async (req, res) => {
 const createOrUpdateTags = async (req, res) => {
   const { tags } = req.body; // Tags array from frontend
 
+  if (!Array.isArray(tags)) {
+    return res.status(400).json({ error: 'Invalid tags format. Expected an array.' });
+  }
+
   try {
     const promises = tags.map(async (tagName) => {
       let tag = await Tag.findOne({ name: tagName });

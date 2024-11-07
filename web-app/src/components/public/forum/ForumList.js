@@ -5,13 +5,14 @@ import { Box, Typography, Card, CardContent, Button, Alert, Grid, Modal } from '
 import { getQuestions } from '../../../services/forumService';
 import Sidebar from './Sidebar';
 import { AuthContext } from '../../../contexts/AuthContext';
+import DOMPurify from 'dompurify';
 
 const ForumList = () => {
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const { user } = useContext(AuthContext); // Check if user is logged in
+  const { user, loading, fetchUser } = useContext(AuthContext) || {};
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,12 +27,17 @@ const ForumList = () => {
         setError('Error fetching questions. Please try again later.');
       }
     };
+
+    // Fetch questions and user data if user is undefined
     fetchQuestions();
-  }, []);
+    if (!user && fetchUser) {
+      fetchUser();
+    }
+  }, [user, loading, fetchUser]);
 
   const handleAskQuestionClick = () => {
     if (user) {
-      navigate('/forum/new');
+      navigate('/forum/questions/new');
     } else {
       setModalOpen(true);
     }
@@ -41,31 +47,31 @@ const ForumList = () => {
     setModalOpen(false);
   };
 
+  if (loading) return <Typography>Loading...</Typography>;
+
   return (
     <Grid container spacing={2} sx={{ p: 4 }}>
       <Grid item xs={12} md={8}>
         <Typography variant="h4" gutterBottom>Community Forum</Typography>
-        <Button 
-          onClick={handleAskQuestionClick}
-          variant="contained" 
-          color="primary" 
-          sx={{ mb: 2 }}
-        >
-          Ask a Question
-        </Button>
+        
         {error && <Alert severity="warning" sx={{ mb: 2 }}>{error}</Alert>}
         {questions.map((question) => (
           <Card key={question._id} sx={{ mb: 2 }}>
             <CardContent>
-              <Link to={`/forum/questions/${question._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link to={`/forum/questions/${question.urlSlug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Typography variant="h5">{question.title}</Typography>
               </Link>
-              <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                {question.content.substring(0, 100)}...
-              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ mt: 1 }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(question.content.substring(0, 100)),
+                }}
+              />
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                 <Typography variant="caption">{question.replies.length} replies</Typography>
-                <Link to={`/forum/questions/${question._id}`} style={{ textDecoration: 'none' }}>
+                <Link to={`/forum/questions/${question.urlSlug}`} style={{ textDecoration: 'none' }}>
                   <Button size="small" variant="outlined">View Details</Button>
                 </Link>
               </Box>
@@ -74,6 +80,14 @@ const ForumList = () => {
         ))}
       </Grid>
       <Grid item xs={12} md={4}>
+        <Button 
+          onClick={handleAskQuestionClick}
+          variant="contained" 
+          color="primary" 
+          sx={{ mb: 2 }}
+        >
+          Ask a Question
+        </Button>
         <Sidebar />
       </Grid>
 

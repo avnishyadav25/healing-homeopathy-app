@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
         const response = await axios.get(`${API_URL}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('Fetched user data:', response.data);
+        console.log('### Fetched user data: = ', response.data);
         setUser(response.data);
       } catch (error) {
         console.error('Error fetching user:', error.response || error);

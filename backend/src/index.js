@@ -26,6 +26,7 @@ const authRoutes = require('./routes/authRoutes'); // Import auth routes
 
 
 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -72,6 +73,7 @@ app.use('/tags', tagRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/forum', forumRoutes);
 app.use('/auth', authRoutes); // Authentication routes
+
 
 
 
