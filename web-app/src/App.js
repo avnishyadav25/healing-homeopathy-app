@@ -17,6 +17,7 @@ import OrderMedicinePage from './pages/public/services/OrderMedicinePage';
 import ProductPage from './pages/public/product/ProductPage';
 import ForumFormPage from './pages/public/forum/ForumFormPage';
 import ForumListPage from './pages/public/forum/ForumListPage';
+import QuestionViewPage from './pages/public/forum/QuestionViewPage';
 
 import LoginPage from './pages/public/auth/LoginPage';
 import RegisterPage from './pages/public/auth/RegisterPage';
@@ -102,7 +103,8 @@ function App() {
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:id" element={<BlogPostPage />} />
             <Route path="/forum" element={<ForumListPage />} />
-            <Route path="/forum/new" element={<ForumFormPage />} />
+            <Route path="/forum/questions/new" element={<ForumFormPage />} />
+            <Route path="/forum/questions/:slug" element={<QuestionViewPage />} />
             <Route path="/products" element={<ProductPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/order-medicine" element={<OrderMedicinePage />} />

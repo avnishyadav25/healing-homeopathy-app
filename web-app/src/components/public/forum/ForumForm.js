@@ -1,12 +1,13 @@
 // src/components/forum/ForumForm.js
 import React, { useState, useContext, useEffect } from 'react';
 import { Box, Grid, Typography, TextField, Button, Modal } from '@mui/material';
-import JoditEditor from 'jodit-react';
 import { useNavigate } from 'react-router-dom';
 import CategorySelector from '../../shared/CategorySelector';
 import TagSelector from '../../shared/TagSelector';
 import Sidebar from './Sidebar';
+import RichTextEditorPublic from '../../shared/RichTextEditorPublic';
 import { AuthContext } from '../../../contexts/AuthContext';
+import { createOrUpdateCategories, createOrUpdateTags, createQuestion } from '../../../services/forumService';
 
 const ForumForm = () => {
   const [title, setTitle] = useState('');
@@ -14,7 +15,6 @@ const ForumForm = () => {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
-  
   const { user, loading, fetchUser } = useContext(AuthContext) || {};
   const navigate = useNavigate();
 
@@ -24,10 +24,30 @@ const ForumForm = () => {
     }
   }, [user, loading, fetchUser]);
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = async () => {
     if (user) {
-      setModalOpen(false);
-      navigate('/forum');
+      try {
+        // Create or update tags and categories
+        const updatedCategories = await createOrUpdateCategories(categories);
+        const updatedTags = await createOrUpdateTags(tags);
+
+        // Prepare question data
+        const questionData = {
+          title,
+          content,
+          categories: updatedCategories.map((cat) => cat._id),
+          tags: updatedTags.map((tag) => tag._id),
+          userId: user._id,
+        };
+
+        // Post the question to the backend
+        await createQuestion(questionData);
+
+        setModalOpen(false);
+        navigate('/forum');
+      } catch (error) {
+        console.error("Error creating question:", error);
+      }
     } else {
       setModalOpen(true);
     }
@@ -51,14 +71,10 @@ const ForumForm = () => {
             sx={{ mb: 3 }}
           />
 
-          <JoditEditor
+          {/* Use the RichTextEditorPublic component */}
+          <RichTextEditorPublic
             value={content}
-            onChange={(newContent) => setContent(newContent)}
-            config={{
-              minHeight: 300,
-              toolbarSticky: false,
-              toolbar: ["bold", "italic", "underline", "|", "ul", "ol", "|", "link", "image"],
-            }}
+            onChange={setContent}
           />
 
           <Grid container spacing={2} sx={{ mt: 2 }}>
@@ -76,7 +92,7 @@ const ForumForm = () => {
                 fullWidth
                 label="Name"
                 value={user?.name || ''}
-                
+                disabled
               />
             </Grid>
             <Grid item xs={6}>
@@ -84,7 +100,7 @@ const ForumForm = () => {
                 fullWidth
                 label="Email"
                 value={user?.email || ''}
-                
+                disabled
               />
             </Grid>
           </Grid>
