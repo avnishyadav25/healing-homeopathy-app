@@ -85,6 +85,17 @@ export const getTags = async () => {
   }
 };
 
+// Fetch categories with question count
+export const getCategories = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/forum/categories`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
+};
+
 
 
 export const createOrUpdateCategories = async (categories) => {
@@ -109,6 +120,7 @@ export const createOrUpdateTags = async (tags) => {
 
 export const createQuestion = async (questionData) => {
   try {
+    console.log('### questionData', questionData);
     const response = await axios.post(`${apiUrl}/forum/questions`, questionData, {
       headers: getAuthHeader(),
     });
@@ -139,4 +151,27 @@ export const getRepliesByQuestionId = async (questionId) => {
     return null; // Return null on error
   }
 };
+
+// Fetch tags with question count
+export const getTagsWithCount = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/forum/tags-with-count`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    throw error;
+  }
+};
+
+// Fetch categories with question count
+export const getCategoriesWithCount = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/forum/categories-with-count`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw error;
+  }
+};
+
 

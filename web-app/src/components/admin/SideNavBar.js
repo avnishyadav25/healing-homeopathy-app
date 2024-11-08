@@ -108,6 +108,11 @@ const SideNavBar = ({ isOpen, toggleDrawer }) => {
           {!collapsed && <ListItemText primary="Blogs" />}
         </ListItem>
 
+        <ListItem button component={Link} to="/admin/forum/questions">
+        <Edit />
+        {!collapsed && <ListItemText primary="Forum Questions" />}
+      </ListItem>
+
         <ListItem button component={Link} to="/admin/appointments">
           <CalendarToday />
           {!collapsed && <ListItemText primary="Appointments" />}

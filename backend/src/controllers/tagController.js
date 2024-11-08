@@ -12,6 +12,27 @@ const createTag = async (req, res) => {
   }
 };
 
+const getAllTags = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const [tags, totalTags] = await Promise.all([
+      Tag.find().skip(skip).limit(limit),
+      Tag.countDocuments()
+    ]);
+
+    res.status(200).json({
+      tags,
+      totalPages: Math.ceil(totalTags / limit),
+    });
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+    res.status(500).json({ error: 'Failed to fetch tags' });
+  }
+};
+
 // Get all tags with pagination
 const getTags = async (req, res) => {
   const { page = 1, limit = 10 } = req.query; // Default to page 1 and 10 tags per page
@@ -90,4 +111,4 @@ const createOrUpdateTags = async (req, res) => {
   }
 };
 
-module.exports = { createTag, getTags, getTagById, updateTag, deleteTag, createOrUpdateTags };
+module.exports = { createTag, getTags, getTagById, updateTag, deleteTag, createOrUpdateTags, getAllTags };

@@ -26,6 +26,7 @@ const ForumForm = () => {
 
   const handlePostSubmit = async () => {
     if (user) {
+      console.log('### user ', user);
       try {
         // Create or update tags and categories
         const updatedCategories = await createOrUpdateCategories(categories);
@@ -35,8 +36,8 @@ const ForumForm = () => {
         const questionData = {
           title,
           content,
-          categories: updatedCategories.map((cat) => cat._id),
-          tags: updatedTags.map((tag) => tag._id),
+          categories: updatedCategories.map((cat) => cat.name),
+          tags: updatedTags.map((tag) => tag.name),
           userId: user._id,
         };
 
