@@ -29,8 +29,7 @@ const generateUniqueSlug = async (title) => {
 // Post a new question
 exports.postQuestion = async (req, res) => {
   try {
-    const { title, content, tags, categories } = req.body;
-    const userId = req.user.id;
+    const { title, content, tags, categories, userId } = req.body;
     
     // Generate a unique slug for the question title
     const urlSlug = await generateUniqueSlug(title);
@@ -175,6 +174,17 @@ exports.getTags = async (req, res) => {
   }
 };
 
+// Get all tags
+exports.getCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    res.status(500).json({ error: 'Failed to fetch tags.' });
+  }
+};
+
 // Get question by URL slug
 exports.getQuestionBySlug = async (req, res) => {
   try {
@@ -199,5 +209,57 @@ exports.getRepliesByQuestionId = async (req, res) => {
   } catch (error) {
     console.error('Error fetching replies:', error);
     res.status(500).json({ error: 'Failed to fetch replies' });
+  }
+};
+
+// Get tags with question count
+exports.getTagsWithCount = async (req, res) => {
+  try {
+    const tags = await Tag.aggregate([
+      {
+        $lookup: {
+          from: 'questions',
+          localField: 'name',
+          foreignField: 'tags',
+          as: 'questions',
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          count: { $size: '$questions' },
+        },
+      },
+    ]);
+    res.status(200).json(tags);
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    res.status(500).json({ error: 'Failed to fetch tags.' });
+  }
+};
+
+// Get categories with question count
+exports.getCategoriesWithCount = async (req, res) => {
+  try {
+    const categories = await Category.aggregate([
+      {
+        $lookup: {
+          from: 'questions',
+          localField: 'name',
+          foreignField: 'category',
+          as: 'questions',
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          count: { $size: '$questions' },
+        },
+      },
+    ]);
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ error: 'Failed to fetch categories.' });
   }
 };

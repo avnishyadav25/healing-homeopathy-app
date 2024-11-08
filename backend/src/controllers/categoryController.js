@@ -12,6 +12,30 @@ const createCategory = async (req, res) => {
   }
 };
 
+
+
+const getAllCategories = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const [categories, totalCategories] = await Promise.all([
+      Category.find().skip(skip).limit(limit),
+      Category.countDocuments()
+    ]);
+
+    res.status(200).json({
+      categories,
+      totalPages: Math.ceil(totalCategories / limit),
+    });
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+};
+
+
 // Get all categories with pagination
 const getCategories = async (req, res) => {
   const { page = 1, limit = 10 } = req.query; // Default to page 1, 10 categories per page
@@ -93,4 +117,4 @@ const createOrUpdateCategories = async (req, res) => {
 
 
 
-module.exports = { createCategory, getCategories, getCategoryById, updateCategory, deleteCategory, createOrUpdateCategories };
+module.exports = { createCategory, getCategories, getCategoryById, updateCategory, deleteCategory, createOrUpdateCategories, getAllCategories };

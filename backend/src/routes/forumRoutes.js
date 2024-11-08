@@ -12,6 +12,9 @@ const {
   getTags,
   getQuestionBySlug,
   getRepliesByQuestionId,
+  getTagsWithCount,
+  getCategoriesWithCount,
+  getCategories
 } = require('../controllers/forumController');
 const router = express.Router();
 const auth = require('../middlewares/authMiddleware');
@@ -34,4 +37,10 @@ router.get('/questions/:slug', getQuestionBySlug); // New route to get question 
 
 router.get('/replies/:id', getRepliesByQuestionId); // New route to get question by slug
 
+router.get('/tags', getTags);
+router.get('/categories', getCategories);
+
+router.get('/tags-with-count', getTagsWithCount);
+router.get('/categories-with-count', getCategoriesWithCount);
+ 
 module.exports = router;

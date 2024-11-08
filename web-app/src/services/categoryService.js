@@ -12,7 +12,7 @@ export const getAllCategories = async (page = 1, limit = 10) => {
     });
     return {
       data: response.data.categories,
-      pages: response.data.pages,
+      pages: response.data.totalPages, // Assuming the backend sends `totalPages`
     };
   } catch (error) {
     console.error('Error fetching categories:', error);

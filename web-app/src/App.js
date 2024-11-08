@@ -33,6 +33,11 @@ import BlogPreviewPage from './pages/admin/blog/BlogPreviewPage';
 
 import CompanyPage from './pages/admin/CompanyPage';
 
+import AddQuestionPage from './pages/admin/forum/AddQuestionPage';
+import EditQuestionPage from './pages/admin/forum/EditQuestionPage';
+import QuestionFormListPage from './pages/admin/forum/QuestionFormListPage';
+import ViewQuestionPage from './pages/admin/forum/ViewQuestionPage';
+
 import AppointmentListPage from './pages/admin/appointment/AppointmentListPage';
 import AddAppointmentUserPage from './pages/admin/appointment/AddAppointmentUserPage';
 import EditAppointmentUserPage from './pages/admin/appointment/EditAppointmentUserPage';
@@ -123,6 +128,11 @@ function App() {
                 <Route path="/admin/blogs/comments" element={<CommentsPage />} />
                 <Route path="/admin/blogs/media" element={<MediaPage />} />
                 <Route path="/admin/blog/preview" element={<BlogPreviewPage />} />
+
+                <Route path="/admin/forum/questions" element={<QuestionFormListPage />} />
+                <Route path="/admin/forum/create" element={<AddQuestionPage />} />
+                <Route path="/admin/forum/view/:id" element={<ViewQuestionPage />} />
+                <Route path="/admin/forum/edit/:id" element={<EditQuestionPage />} />
 
                 <Route path="/admin/appointments" element={<AppointmentListPage />} />
                 <Route path="/admin/appointments/create" element={<AddAppointmentUserPage />} />
