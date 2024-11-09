@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import QuestionForm from './QuestionForm';
 import { getQuestionDetails, createQuestion } from '../../../services/forumService';
 import { useParams } from 'react-router-dom';
+import AuthProvider from '../../../contexts/AuthContext';
+
 
 const EditQuestionForm = () => {
   const { id } = useParams();
@@ -20,7 +22,12 @@ const EditQuestionForm = () => {
     createQuestion(question);
   };
 
-  return questionData ? <QuestionForm questionData={questionData} onSubmit={handleSubmit} /> : null;
+  return questionData ? (
+    <AuthProvider>
+<QuestionForm questionData={questionData} onSubmit={handleSubmit} /> 
+    </AuthProvider>
+  
+): null;
 };
 
 export default EditQuestionForm;

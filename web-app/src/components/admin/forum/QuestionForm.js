@@ -10,26 +10,36 @@ import TagSelector from '../../shared/TagSelector';
 const QuestionForm = ({ questionData, onSubmit }) => {
   const [title, setTitle] = useState(questionData?.title || '');
   const [content, setContent] = useState(questionData?.content || '');
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
-  const { user } = useContext(AuthContext);
+  const [availableCategories, setAvailableCategories] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const { user, loading, fetchUser } = useContext(AuthContext) || {};
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedCategories = await getCategories();
-      const fetchedTags = await getTags();
-      setCategories(fetchedCategories);
-      setTags(fetchedTags);
+      try {
+        const fetchedCategories = await getCategories();
+        const fetchedTags = await getTags();
+        setAvailableCategories(fetchedCategories.map(cat => ({ label: cat.name, value: cat._id })));
+        setAvailableTags(fetchedTags.map(tag => ({ label: tag.name, value: tag._id })));
+      } catch (error) {
+        console.error('Error fetching categories or tags:', error);
+      }
     };
     fetchData();
-  }, []);
+
+    if (!user && !loading) {
+      fetchUser();
+    }
+  }, [user, loading, fetchUser]);
 
   const handleSubmit = () => {
     const question = {
       title,
       content,
-      categories,
-      tags,
+      categories: selectedCategories.map(cat => cat.value),
+      tags: selectedTags.map(tag => tag.value),
       userId: user._id,
     };
     onSubmit(question);
@@ -48,10 +58,18 @@ const QuestionForm = ({ questionData, onSubmit }) => {
       <RichTextEditorPublic value={content} onChange={setContent} />
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={6}>
-          <CategorySelector categories={categories} setCategories={setCategories} />
+          <CategorySelector
+            options={availableCategories}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+          />
         </Grid>
         <Grid item xs={6}>
-          <TagSelector tags={tags} setTags={setTags} />
+          <TagSelector
+            options={availableTags}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+          />
         </Grid>
       </Grid>
       <TextField label="Name" value={user?.name || ''} fullWidth disabled sx={{ mt: 2 }} />

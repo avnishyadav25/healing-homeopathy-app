@@ -14,7 +14,8 @@ const {
   getRepliesByQuestionId,
   getTagsWithCount,
   getCategoriesWithCount,
-  getCategories
+  getCategories,
+  getQuestionByIdentifier
 } = require('../controllers/forumController');
 const router = express.Router();
 const auth = require('../middlewares/authMiddleware');
@@ -33,7 +34,9 @@ router.delete('/replies/:replyId', deleteReply); // Delete reply (admin only)
 router.get('/popular-questions', getPopularQuestions);
 router.get('/recent-questions', getRecentQuestions);
 router.get('/tags', getTags);
-router.get('/questions/:slug', getQuestionBySlug); // New route to get question by slug
+//router.get('/questions/:slug', getQuestionBySlug); // New route to get question by slug
+router.get('/questions/:identifier', getQuestionByIdentifier);
+
 
 router.get('/replies/:id', getRepliesByQuestionId); // New route to get question by slug
 
