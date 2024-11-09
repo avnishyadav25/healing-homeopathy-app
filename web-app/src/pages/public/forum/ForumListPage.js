@@ -13,7 +13,7 @@ const ForumListPage = () => (
     <AuthProvider>
     <CoverSection 
         title="Welcome to Healing Homoeopathy' Forum" 
-        subtitle="At Healing Homoeopathy, we believe in the power of nature to heal. Our practice is dedicated to providing personalized homeopathic treatments that address the root cause of your health concerns. With a focus on holistic wellness, we offer natural remedies that are tailored to your individual needs, helping you achieve a balanced and healthy life." 
+        subtitle="Dive into our community of natural healing! Explore homeopathic insights, share experiences, and connect with others on the journey to balanced wellness. Join us and discover the power of holistic health!" 
         image={forumBackgroundImage}
       />
       <Container maxWidth="xl" sx={{ bgcolor: 'rgba(255, 255, 255, 0.8)', borderRadius: 2, p: 4 }}>
