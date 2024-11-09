@@ -32,12 +32,12 @@ export const getQuestions = async () => {
   }
 };
 
-export const getQuestionDetails = async (questionId) => {
+export const getQuestionDetails = async (identifier) => { 
   try {
-    const response = await axios.get(`${apiUrl}/forum/questions/${questionId}`);
+    const response = await axios.get(`${apiUrl}/forum/questions/${identifier}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching question details for ID ${questionId}:`, error);
+    console.error(`Error fetching question details for identifier ${identifier}:`, error);
     return null; // Return null on error
   }
 };

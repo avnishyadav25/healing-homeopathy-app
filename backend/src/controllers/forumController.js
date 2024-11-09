@@ -3,6 +3,8 @@ const Question = require('../models/Question');
 const Reply = require('../models/Reply');
 const Tag = require('../models/Tag');
 const Category = require('../models/Category');
+const mongoose = require('mongoose');
+
 
 // Helper function to create a URL-friendly slug from a string
 const createSlug = (title) => {
@@ -190,6 +192,26 @@ exports.getQuestionBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
     const question = await Question.findOne({ urlSlug: slug }).populate('userId', 'name').populate('replies');
+    if (!question) return res.status(404).json({ error: 'Question not found' });
+    res.json(question);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getQuestionByIdentifier = async (req, res) => {
+  try {
+    const { identifier } = req.params;
+    let question;
+
+    if (mongoose.Types.ObjectId.isValid(identifier)) {
+      // If identifier is a valid ObjectId, search by ID
+      question = await Question.findById(identifier).populate('userId', 'name').populate('replies');
+    } else {
+      // Otherwise, search by slug
+      question = await Question.findOne({ urlSlug: identifier }).populate('userId', 'name').populate('replies');
+    }
+
     if (!question) return res.status(404).json({ error: 'Question not found' });
     res.json(question);
   } catch (error) {
