@@ -108,6 +108,7 @@ function App() {
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogs/:id" element={<BlogPostPage />} />
             <Route path="/forum" element={<ForumListPage />} />
+            <Route path="/forum/page/:page" element={<ForumListPage />} />
             <Route path="/forum/questions/new" element={<ForumFormPage />} />
             <Route path="/forum/questions/:slug" element={<QuestionViewPage />} />
             <Route path="/products" element={<ProductPage />} />

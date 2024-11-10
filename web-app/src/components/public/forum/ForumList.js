@@ -5,6 +5,8 @@ import { Box, Typography, Card, CardContent, Button, Alert, Grid, Modal } from '
 import { getQuestions } from '../../../services/forumService';
 import Sidebar from './Sidebar';
 import { AuthContext } from '../../../contexts/AuthContext';
+import { AuthContext1 } from '../../../contexts/AuthContext';
+
 import DOMPurify from 'dompurify';
 
 const ForumList = () => {
