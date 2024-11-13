@@ -228,13 +228,13 @@ exports.getQuestionByIdentifier = async (req, res) => {
 // Fetch replies for a specific question, sorted by latest first
 exports.getRepliesByQuestionId = async (req, res) => {
   try {
-    console.log('### req.params ', req.params);
+    //console.log('### req.params ', req.params);
     const { id } = req.params;
     //console.log('### questionId ', questionId);
     const replies = await Reply.find({ questionId : id })
       .sort({ createdAt: -1 }) // Sort by latest replies first
       .populate('userId', 'name email'); // Populate user details if needed
-      console.log('### replies ', replies);
+      //console.log('### replies ', replies);
     res.status(200).json(replies);
   } catch (error) {
     console.error('Error fetching replies:', error);

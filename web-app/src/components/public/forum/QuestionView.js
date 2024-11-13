@@ -1,17 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, Grid, TextField, Card, CardContent, Snackbar, Alert, Avatar } from '@mui/material';
+import { Box, Typography, Button, Grid, TextField, Card, CardContent, Snackbar, Alert, Avatar,  Modal, Pagination } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { getQuestionBySlug, postReply, getRepliesByQuestionId } from '../../../services/forumService';
 import RichTextEditorPublic from '../../shared/RichTextEditorPublic';
 import { AuthContext } from '../../../contexts/AuthContext';
+import Ads from '../../common/Ads';
+import Sidebar from './Sidebar';
+
+
 
 const QuestionView = () => {
   const { slug } = useParams();
   const [question, setQuestion] = useState(null);
   const [replyContent, setReplyContent] = useState('');
   const [replies, setReplies] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState(null);
   const { user, loading, fetchUser } = useContext(AuthContext) || {};
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
@@ -62,11 +67,26 @@ const QuestionView = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const handleAskQuestionClick = () => {
+    if (user) {
+      navigate('/forum/questions/new');
+    } else {
+      setModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   if (error) return <Typography>{error}</Typography>;
   if (!question || loading) return <Typography>Loading...</Typography>;
 
   return (
     <>
+    <Ads />
+    <Grid container spacing={2} sx={{ p: 4 }}>
+      <Grid item xs={12} md={8}>
       <Card sx={{ mb: 4 }}>
         <CardContent>
           <Typography variant="h4">{question.title}</Typography>
@@ -91,6 +111,7 @@ const QuestionView = () => {
           onChange={setReplyContent}
           disabled={!user}
         />
+        
         
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid item xs={6}>
@@ -135,7 +156,7 @@ const QuestionView = () => {
        
 
 {replies.map((reply, index) => (
-   <Card key={reply._id} sx={{ mt: 2 }}>
+   <Card key={reply._id} sx={{ mt: 2, mb:2 }}>
             <CardContent>
         <Box key={index} sx={{ mb: 2, display: 'flex', alignItems: 'flex-start' }}>
           <Avatar sx={{ mr: 2 }}>
@@ -167,6 +188,54 @@ const QuestionView = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <Button 
+          onClick={handleAskQuestionClick}
+          variant="contained" 
+          color="primary" 
+          sx={{ mb: 2 }}
+        >
+          Ask a Question
+        </Button>
+        <Sidebar />
+      </Grid>
+      </Grid>
+      <Ads />
+      {/* Modal for login/register prompt */}
+      <Modal open={isModalOpen} onClose={handleCloseModal}>
+        <Box sx={{
+          position: 'absolute', 
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper', 
+          boxShadow: 24, 
+          p: 4, 
+          borderRadius: 2
+        }}>
+          <Typography variant="h6" gutterBottom>
+            Please Register or Login
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 3 }}>
+            You need to be logged in to ask a question.
+          </Typography>
+          <Button 
+            variant="contained" 
+            color="secondary" 
+            sx={{ mr: 2 }}
+            onClick={() => navigate('/register')}
+          >
+            Register
+          </Button>
+          <Button 
+            variant="outlined"
+            onClick={() => navigate('/login')}
+          >
+            Login
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 };
