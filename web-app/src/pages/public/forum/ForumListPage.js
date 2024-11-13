@@ -8,6 +8,7 @@ import forumBackgroundImage from '../../../assets/forum-background.jpg'; // Exam
 import AuthProvider from '../../../contexts/AuthContext';
 
 
+
 const ForumListPage = () => (
   <Template>
     <AuthProvider>

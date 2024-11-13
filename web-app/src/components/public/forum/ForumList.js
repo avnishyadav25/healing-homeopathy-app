@@ -5,6 +5,8 @@ import { Box, Typography, Card, CardContent, Button, Alert, Grid, Modal, Paginat
 import { getQuestions } from '../../../services/forumService';
 import Sidebar from './Sidebar';
 import { AuthContext } from '../../../contexts/AuthContext';
+import Ads from '../../common/Ads';
+
 import DOMPurify from 'dompurify';
 
 const ForumList = () => {
@@ -58,6 +60,9 @@ const ForumList = () => {
   if (loading) return <Typography>Loading...</Typography>;
 
   return (
+    <>
+       <Ads />
+    
     <Grid container spacing={2} sx={{ p: 4 }}>
       <Grid item xs={12} md={8}>
         <Typography variant="h4" gutterBottom>Community Forum</Typography>
@@ -145,6 +150,8 @@ const ForumList = () => {
         </Box>
       </Modal>
     </Grid>
+    <Ads />
+   </>
   );
 };
 
