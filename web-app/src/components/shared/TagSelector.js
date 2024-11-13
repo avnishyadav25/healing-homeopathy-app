@@ -4,7 +4,7 @@ import { TextField, IconButton, Autocomplete } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { fetchTags, createOrUpdateTags } from '../../services/tagService';
 
-const TagSelector = ({ tags, setTags }) => {
+const TagSelector = ({ tags = [], setTags }) => {
   const [allTags, setAllTags] = useState([]);
   const [inputValueTag, setInputValueTag] = useState('');
 
@@ -27,7 +27,7 @@ const TagSelector = ({ tags, setTags }) => {
       try {
         const updatedTags = await createOrUpdateTags(newTags);
         setAllTags(prev => [...prev, ...updatedTags]);
-        setTags((prev) => [...prev, ...updatedTags.map(tag => tag._id || tag)]);
+        setTags((prev) => [...(prev || []), ...updatedTags.map(tag => tag._id || tag)]);
       } catch (error) {
         console.error("Failed to add or update tags:", error);
       }
@@ -41,7 +41,7 @@ const TagSelector = ({ tags, setTags }) => {
       freeSolo
       options={allTags}
       getOptionLabel={(option) => option?.name || ""}
-      value={tags.map((tag) => allTags.find((item) => item._id === tag) || { _id: tag, name: tag })}
+      value={(tags || []).map((tag) => allTags.find((item) => item._id === tag) || { _id: tag, name: tag })}
       onChange={(e, newTags) => setTags(newTags.map((tag) => tag._id || tag))}
       inputValue={inputValueTag}
       onInputChange={(e, newInputValue) => setInputValueTag(newInputValue)}

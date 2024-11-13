@@ -4,6 +4,7 @@ const CommentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: false },
   phone: { type: String, required: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
   text: { type: String, required: true },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Blog', required: true },
   parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null }, // For replies

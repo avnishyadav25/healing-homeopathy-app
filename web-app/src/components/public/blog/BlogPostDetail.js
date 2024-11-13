@@ -8,6 +8,8 @@ import RecentPosts from '../../common/RecentPosts';
 import PopularPosts from '../../common/PopularPosts';
 import Ads from '../../common/Ads';
 import Comments from '../../common/Comments';
+import AuthProvider from '../../../contexts/AuthContext';
+
 
 const apiUrl = process.env.REACT_APP_API_URL; // Use API URL from environment variables
 
@@ -123,9 +125,11 @@ const BlogPostDetail = ({ post }) => {
 
           {/* Section Divider */}
           <SectionDivider />
+          <AuthProvider>
 
           {/* Comments Section */}
           <Comments postId={post._id} />
+          </AuthProvider>
         </Paper>
       </Container>
     </Container>

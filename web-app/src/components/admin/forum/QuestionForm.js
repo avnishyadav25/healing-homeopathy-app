@@ -1,6 +1,6 @@
 // src/components/admin/forum/QuestionForm.js
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Typography, TextField, Button, Grid } from '@mui/material';
+import { Box, Typography, TextField, Button, Grid, Snackbar, Alert } from '@mui/material';
 import { createQuestion, getTags, getCategories } from '../../../services/forumService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import RichTextEditorPublic from '../../shared/RichTextEditorPublic';
@@ -14,6 +14,8 @@ const QuestionForm = ({ questionData, onSubmit }) => {
   const [availableTags, setAvailableTags] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
   const { user, loading, fetchUser } = useContext(AuthContext) || {};
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const QuestionForm = ({ questionData, onSubmit }) => {
     }
   }, [user, loading, fetchUser]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const question = {
       title,
       content,
@@ -42,7 +44,17 @@ const QuestionForm = ({ questionData, onSubmit }) => {
       tags: selectedTags.map(tag => tag.value),
       userId: user._id,
     };
-    onSubmit(question);
+    try {
+      await onSubmit(question);
+      setSnackbar({ open: true, message: 'Question posted successfully!', severity: 'success' });
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Failed to post question. Please try again.', severity: 'error' });
+      console.error('Error submitting question:', error);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -77,6 +89,18 @@ const QuestionForm = ({ questionData, onSubmit }) => {
       <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ mt: 3 }}>
         Post
       </Button>
+
+      {/* Snackbar for success/error messages */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
