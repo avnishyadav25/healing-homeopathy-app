@@ -6,10 +6,11 @@ const RichTextEditorPublic = ({ value, onChange, disabled, config }) => {
   const editorRef = useRef(null);
 
   const defaultConfig = {
-    minHeight: 300,
+    minHeight: 150,
     readonly: disabled, // Make the editor read-only if disabled is true
-    toolbarSticky: false,
-    toolbar: ["bold", "italic", "underline", "|", "ul", "ol", "|", "link", "image"],
+    toolbarSticky: true,
+    toolbar: ["bold", "italic", "underline", "|", "ul", "ol", "|", "link"], // Simplified toolbar
+    buttons: ["bold", "italic", "underline", "ul", "ol", "link"], // Set buttons for simple toolbar
     ...config, // Merge with any additional config passed as props
   };
 

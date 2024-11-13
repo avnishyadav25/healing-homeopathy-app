@@ -22,13 +22,18 @@ export const postQuestions = async () => {
 };
 
 
-export const getQuestions = async () => {
+export const getQuestions = async (page = 1, limit = 10) => {
   try {
-    const response = await axios.get(`${apiUrl}/forum/questions`);
-    return response.data;
+    const response = await axios.get(`${apiUrl}/forum/questions`, {
+      params: { page, limit },
+    });
+    return {
+      data: response.data.questions,
+      total: response.data.total,
+    };
   } catch (error) {
     console.error('Error fetching questions:', error);
-    return []; // Return an empty array on error
+    throw error;
   }
 };
 

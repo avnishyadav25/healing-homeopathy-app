@@ -1,27 +1,29 @@
 // src/components/forum/ForumList.js
 import React, { useEffect, useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Box, Typography, Card, CardContent, Button, Alert, Grid, Modal } from '@mui/material';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Box, Typography, Card, CardContent, Button, Alert, Grid, Modal, Pagination } from '@mui/material';
 import { getQuestions } from '../../../services/forumService';
 import Sidebar from './Sidebar';
 import { AuthContext } from '../../../contexts/AuthContext';
-import { AuthContext1 } from '../../../contexts/AuthContext';
-
 import DOMPurify from 'dompurify';
 
 const ForumList = () => {
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
 
   const { user, loading, fetchUser } = useContext(AuthContext) || {};
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const data = await getQuestions();
+        const { data, total } = await getQuestions(page, 10); // Fetch 10 questions per page
         setQuestions(data);
+        setTotalPages(Math.ceil(total / 10));
         if (data.length === 0) {
           setError('No questions have been asked yet.');
         }
@@ -30,12 +32,12 @@ const ForumList = () => {
       }
     };
 
-    // Fetch questions and user data if user is undefined
     fetchQuestions();
+
     if (!user && fetchUser) {
       fetchUser();
     }
-  }, [user, loading, fetchUser]);
+  }, [page, user, fetchUser]);
 
   const handleAskQuestionClick = () => {
     if (user) {
@@ -49,13 +51,17 @@ const ForumList = () => {
     setModalOpen(false);
   };
 
+  const handlePageChange = (event, value) => {
+    setSearchParams({ page: value });
+  };
+
   if (loading) return <Typography>Loading...</Typography>;
 
   return (
     <Grid container spacing={2} sx={{ p: 4 }}>
       <Grid item xs={12} md={8}>
         <Typography variant="h4" gutterBottom>Community Forum</Typography>
-        
+
         {error && <Alert severity="warning" sx={{ mb: 2 }}>{error}</Alert>}
         {questions.map((question) => (
           <Card key={question._id} sx={{ mb: 2 }}>
@@ -80,7 +86,18 @@ const ForumList = () => {
             </CardContent>
           </Card>
         ))}
+
+        {/* Pagination Component */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
       </Grid>
+
       <Grid item xs={12} md={4}>
         <Button 
           onClick={handleAskQuestionClick}

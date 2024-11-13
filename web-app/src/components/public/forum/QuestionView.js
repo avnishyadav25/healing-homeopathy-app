@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, Grid, TextField, Card, CardContent, Snackbar, Alert } from '@mui/material';
+import { Box, Typography, Button, Grid, TextField, Card, CardContent, Snackbar, Alert, Avatar } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import { getQuestionBySlug, postReply, getRepliesByQuestionId } from '../../../services/forumService';
 import RichTextEditorPublic from '../../shared/RichTextEditorPublic';
 import { AuthContext } from '../../../contexts/AuthContext';
@@ -21,7 +23,9 @@ const QuestionView = () => {
         const data = await getQuestionBySlug(slug);
         setQuestion(data);
         // Fetch replies for the question
+        console.log('### data._id = ', data._id);
         const fetchedReplies = await getRepliesByQuestionId(data._id);
+        console.log('### fetchedReplies = ', fetchedReplies);
         setReplies(fetchedReplies);
       } catch (err) {
         setError('Error fetching question details.');
@@ -128,15 +132,28 @@ const QuestionView = () => {
       {/* Display replies */}
       <Box sx={{ mt: 4 }}>
         <Typography variant="h6">Replies</Typography>
-        {replies.map((reply) => (
-          <Card key={reply._id} sx={{ mt: 2 }}>
+       
+
+{replies.map((reply, index) => (
+   <Card key={reply._id} sx={{ mt: 2 }}>
             <CardContent>
-              <Typography variant="subtitle1">{reply.userId?.name}</Typography>
-              <Typography variant="body2" color="textSecondary">{reply.createdAt}</Typography>
-              <Typography variant="body1" dangerouslySetInnerHTML={{ __html: reply.content }} />
-            </CardContent>
-          </Card>
-        ))}
+        <Box key={index} sx={{ mb: 2, display: 'flex', alignItems: 'flex-start' }}>
+          <Avatar sx={{ mr: 2 }}>
+            <AccountCircleIcon />
+          </Avatar>
+          <Box>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
+              {reply.userId?.name} - {new Date(reply.createdAt).toLocaleDateString()}
+            </Typography>
+            <Typography variant="body1">
+            <div dangerouslySetInnerHTML={{ __html: reply.content }} />
+            </Typography>
+          </Box>
+        </Box>
+        </CardContent>
+        </Card>
+      ))}
+
       </Box>
 
       {/* Snackbar for success and error messages */}

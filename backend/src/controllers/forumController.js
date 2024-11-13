@@ -74,12 +74,18 @@ exports.postQuestion = async (req, res) => {
 
 // Get all questions in reverse chronological order
 exports.getQuestions = async (req, res) => {
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const skip = (page - 1) * limit;
+
   try {
+    const total = await Question.countDocuments();
     const questions = await Question.find()
-      .sort({ createdAt: -1 }) // Latest first
-      .populate('userId', 'name')
-      .populate('replies');
-    res.json(questions);
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    
+    res.json({ questions, total });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -222,11 +228,13 @@ exports.getQuestionByIdentifier = async (req, res) => {
 // Fetch replies for a specific question, sorted by latest first
 exports.getRepliesByQuestionId = async (req, res) => {
   try {
-    const { questionId } = req.params;
-    const replies = await Reply.find({ questionId })
+    console.log('### req.params ', req.params);
+    const { id } = req.params;
+    //console.log('### questionId ', questionId);
+    const replies = await Reply.find({ questionId : id })
       .sort({ createdAt: -1 }) // Sort by latest replies first
       .populate('userId', 'name email'); // Populate user details if needed
-
+      console.log('### replies ', replies);
     res.status(200).json(replies);
   } catch (error) {
     console.error('Error fetching replies:', error);
